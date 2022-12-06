@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public final class HelpFeature extends ExecutableFeature {
+
     private static final UUID HELP_UNIQUE_IDENTIFIER = UUID.fromString("1f7a6dd2-20bb-4843-8e3a-2f75454e2e50");
     private static final String HELP_HUMAN_IDENTIFIER = "help";
     private static final Version HELP_VERSION = new Version(0, 1, 0, Optional.empty(), Optional.empty());
@@ -39,8 +40,10 @@ public final class HelpFeature extends ExecutableFeature {
     }
 
     @Override
-    public void load() {}
+    public void load() {
+    }
 
     @Override
-    public void unload() {}
+    public void unload() {
+    }
 }
