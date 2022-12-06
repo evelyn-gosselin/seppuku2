@@ -25,6 +25,8 @@ public interface FeatureRepository extends Iterable<Feature> {
 
     <T extends Feature> List<T> findFeaturesByClass(final Class<T> featureClass);
 
+    <T extends Feature> List<T> findFeaturesByHumanIdentifier(final String humanIdentifier, final Class<T> featureClass);
+
     <T extends Feature> T findFeatureByUniqueIdentifier(final UUID uniqueIdentifier, final Class<T> featureClass) throws CouldNotBeFoundFeatureException;
 
     default Stream<Feature> stream() {
