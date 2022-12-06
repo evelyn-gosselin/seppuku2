@@ -1,5 +1,6 @@
-package pw.seppuku.core.feature.persistent.features;
+package pw.seppuku.hu.persistent.features;
 
+import net.minecraft.client.player.LocalPlayer;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.subscribe.EventSubscriber;
 import pw.seppuku.events.minecraft.client.gui.GuiRenderEvent;
@@ -14,22 +15,22 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class HeadsUpDisplayFeature extends PersistentFeature {
+public final class HeadsUpFeature extends PersistentFeature {
 
-    private static final UUID HEADS_UP_DISPLAY_UNIQUE_IDENTIFIER = UUID.fromString("e0c28491-5fc1-43cd-b302-5f5d98e7c1e0");
-    private static final String HEADS_UP_DISPLAY_HUMAN_IDENTIFIER = "heads_up_display";
-    private static final Version HEADS_UP_DISPLAY_VERSION = new Version(0, 1, 0, Optional.empty(), Optional.empty());
-    private static final List<Author> HEADS_UP_DISPLAY_AUTHORS = List.of(new Author("wine", Optional.of("Ossian"), Optional.of("Winter"), Optional.of("ossian@hey.com")));
+    private static final UUID HEADS_UP_UNIQUE_IDENTIFIER = UUID.fromString("e5c78375-9c81-478d-ab85-7bf66d06ce75");
+    private static final String HEADS_UP_HUMAN_IDENTIFIER = "heads_up";
+    private static final Version HEADS_UP_VERSION = new Version(0, 1, 0, Optional.empty(), Optional.empty());
+    private static final List<Author> HEADS_UP_AUTHORS = List.of(new Author("wine", Optional.of("Ossian"), Optional.of("Winter"), Optional.of("ossian@hey.com")));
 
     private final EventBus eventBus;
 
-    private final EventSubscriber<GuiRenderEvent> guiRenderEventEventSubscriber;
+    private final EventSubscriber<GuiRenderEvent> guiRenderEventSubscriber;
 
-    public HeadsUpDisplayFeature(final EventBus eventBus, final FeatureRepository featureRepository) {
-        super(HEADS_UP_DISPLAY_UNIQUE_IDENTIFIER, HEADS_UP_DISPLAY_HUMAN_IDENTIFIER, HEADS_UP_DISPLAY_VERSION, HEADS_UP_DISPLAY_AUTHORS);
+    public HeadsUpFeature(final EventBus eventBus, final FeatureRepository featureRepository) {
+        super(HEADS_UP_UNIQUE_IDENTIFIER, HEADS_UP_HUMAN_IDENTIFIER, HEADS_UP_VERSION, HEADS_UP_AUTHORS);
         this.eventBus = eventBus;
 
-        this.guiRenderEventEventSubscriber = event -> {
+        this.guiRenderEventSubscriber = event -> {
             final var y = new AtomicInteger(2);
             featureRepository.stream()
                     .filter(ToggleableFeature.class::isInstance)
@@ -46,11 +47,11 @@ public final class HeadsUpDisplayFeature extends PersistentFeature {
 
     @Override
     public void load() {
-        eventBus.subscribe(GuiRenderEvent.class, guiRenderEventEventSubscriber);
+        eventBus.subscribe(GuiRenderEvent.class, guiRenderEventSubscriber);
     }
 
     @Override
     public void unload() {
-        eventBus.unsubscribe(GuiRenderEvent.class, guiRenderEventEventSubscriber);
+        eventBus.unsubscribe(GuiRenderEvent.class, guiRenderEventSubscriber);
     }
 }

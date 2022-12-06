@@ -5,6 +5,7 @@ import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.bus.buses.SimpleEventBus;
 import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
+import pw.seppuku.feature.persistent.PersistentFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.repository.repositories.SimpleFeatureRepository;
 import pw.seppuku.plugin.repository.PluginRepository;
@@ -20,6 +21,8 @@ public final class Seppuku {
     private Seppuku() throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException {
         featureRepository.add(new PluginLoaderFeature(eventBus, featureRepository, pluginRepository));
         featureRepository.findFeatureByClass(PluginLoaderFeature.class).load();
+
+        featureRepository.findFeaturesByClass(PersistentFeature.class).forEach(PersistentFeature::load);
     }
 
     public static Seppuku instance() {

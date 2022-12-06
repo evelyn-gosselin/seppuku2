@@ -18,7 +18,6 @@ include(
     "seppuku-client",
 
     "seppuku-events",
-    "seppuku-core",
 
     "seppuku-metadata-api",
     "seppuku-event-api",
@@ -26,5 +25,6 @@ include(
     "seppuku-mixins-api",
     "seppuku-plugin-api",
 
+    "plugins:seppuku-heads-up",
     "plugins:seppuku-sprint",
 )

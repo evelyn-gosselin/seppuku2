@@ -19,7 +19,7 @@ public final class SprintFeature extends ToggleableFeature {
     private static final Version SPRINT_VERSION = new Version(0, 1, 0, Optional.empty(), Optional.empty());
     private static final List<Author> SPRINT_AUTHORS = List.of(new Author("wine", Optional.of("Ossian"), Optional.of("Winter"), Optional.of("ossian@hey.com")));
 
-    private static final EventSubscriber<LocalPlayerSendPositionEvent> LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER = event -> {
+    private static final EventSubscriber<LocalPlayerSendPositionEvent> LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER = event -> {
         event.localPlayer().setSprinting(shouldSprint(event.localPlayer()));
         return false;
     };
@@ -37,11 +37,11 @@ public final class SprintFeature extends ToggleableFeature {
 
     @Override
     public void load() {
-        eventBus.subscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER);
+        eventBus.subscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER);
     }
 
     @Override
     public void unload() {
-        eventBus.unsubscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER);
+        eventBus.unsubscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER);
     }
 }
