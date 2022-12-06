@@ -15,12 +15,3 @@ dependencies {
     implementation(project(":seppuku-feature-api"))
     implementation(project(":seppuku-plugin-api"))
 }
-
-tasks {
-    processResources {
-        inputs.property("version", project.version)
-        filesMatching("fabric.mod.json") {
-            expand(mutableMapOf("version" to project.version))
-        }
-    }
-}
