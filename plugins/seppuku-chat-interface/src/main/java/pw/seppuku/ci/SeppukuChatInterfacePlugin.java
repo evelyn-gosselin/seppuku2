@@ -8,14 +8,13 @@ import pw.seppuku.ci.execute.features.HelpFeature;
 import pw.seppuku.ci.execute.features.PluginsFeature;
 import pw.seppuku.ci.execute.features.ToggleFeature;
 import pw.seppuku.ci.persistent.features.ChatInterfaceFeature;
-import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
-import pw.seppuku.plugin.repository.PluginRepository;
+import pw.seppuku.resolver.Inject;
 import pw.seppuku.resolver.Resolver;
 
 public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
@@ -32,8 +31,9 @@ public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
   private final Resolver resolver;
   private final FeatureRepository featureRepository;
 
+  @Inject
   public SeppukuChatInterfacePlugin(final Resolver resolver,
-      final FeatureRepository featureRepository, final PluginRepository pluginRepository) {
+      final FeatureRepository featureRepository) {
     super(CHAT_INTERFACE_UNIQUE_IDENTIFIER, CHAT_INTERFACE_HUMAN_IDENTIFIER, CHAT_INTERFACE_VERSION,
         CHAT_INTERFACE_AUTHORS);
     this.resolver = resolver;

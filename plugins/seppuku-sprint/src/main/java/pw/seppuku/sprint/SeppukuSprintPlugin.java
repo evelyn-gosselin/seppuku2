@@ -10,6 +10,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
+import pw.seppuku.resolver.Inject;
 import pw.seppuku.resolver.Resolver;
 import pw.seppuku.sprint.toggleable.features.SprintFeature;
 
@@ -27,6 +28,7 @@ public final class SeppukuSprintPlugin extends AbstractPlugin {
   private final Resolver resolver;
   private final FeatureRepository featureRepository;
 
+  @Inject
   public SeppukuSprintPlugin(final Resolver resolver, final FeatureRepository featureRepository) {
     super(SEPPUKU_SPRINT_UNIQUE_IDENTIFIER, SEPPUKU_SPRINT_HUMAN_IDENTIFIER, SEPPUKU_SPRINT_VERSION,
         SEPPUKU_SPRINT_AUTHORS);

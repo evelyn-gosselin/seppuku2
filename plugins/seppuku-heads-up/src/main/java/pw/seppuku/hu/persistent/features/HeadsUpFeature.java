@@ -12,6 +12,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.toggleable.ToggleableFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
+import pw.seppuku.resolver.Inject;
 
 public final class HeadsUpFeature extends PersistentFeature {
 
@@ -28,6 +29,7 @@ public final class HeadsUpFeature extends PersistentFeature {
 
   private final EventSubscriber<GuiRenderEvent> guiRenderEventSubscriber;
 
+  @Inject
   public HeadsUpFeature(final EventBus eventBus, final FeatureRepository featureRepository) {
     super(HEADS_UP_UNIQUE_IDENTIFIER, HEADS_UP_HUMAN_IDENTIFIER, HEADS_UP_VERSION,
         HEADS_UP_AUTHORS);

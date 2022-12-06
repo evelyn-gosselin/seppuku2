@@ -11,6 +11,7 @@ import pw.seppuku.hu.persistent.features.HeadsUpFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
+import pw.seppuku.resolver.Inject;
 import pw.seppuku.resolver.Resolver;
 
 public final class SeppukuHeadsUpPlugin extends AbstractPlugin {
@@ -27,6 +28,7 @@ public final class SeppukuHeadsUpPlugin extends AbstractPlugin {
   private final Resolver resolver;
   private final FeatureRepository featureRepository;
 
+  @Inject
   public SeppukuHeadsUpPlugin(final Resolver resolver, final FeatureRepository featureRepository) {
     super(SEPPUKU_HEADS_UP_UNIQUE_IDENTIFIER, SEPPUKU_HEADS_UP_HUMAN_IDENTIFIER,
         SEPPUKU_HEADS_UP_VERSION, SEPPUKU_HEADS_UP_AUTHORS);

@@ -9,6 +9,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.toggleable.ToggleableFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
+import pw.seppuku.resolver.Inject;
 
 public final class ToggleFeature extends ExecutableFeature {
 
@@ -23,6 +24,7 @@ public final class ToggleFeature extends ExecutableFeature {
 
   private final FeatureRepository featureRepository;
 
+  @Inject
   public ToggleFeature(final FeatureRepository featureRepository) {
     super(TOGGLE_UNIQUE_IDENTIFIER, TOGGLE_HUMAN_IDENTIFIER, TOGGLE_VERSION, TOGGLE_AUTHORS);
     this.featureRepository = featureRepository;

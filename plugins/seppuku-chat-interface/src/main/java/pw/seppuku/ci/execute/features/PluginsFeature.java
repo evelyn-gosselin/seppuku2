@@ -10,6 +10,7 @@ import pw.seppuku.feature.execute.ExecutableFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.repository.PluginRepository;
+import pw.seppuku.resolver.Inject;
 
 public final class PluginsFeature extends ExecutableFeature {
 
@@ -24,6 +25,7 @@ public final class PluginsFeature extends ExecutableFeature {
 
   private final PluginRepository pluginRepository;
 
+  @Inject
   public PluginsFeature(final PluginRepository pluginRepository) {
     super(PLUGINS_UNIQUE_IDENTIFIER, PLUGINS_HUMAN_IDENTIFIER, PLUGINS_VERSION, PLUGINS_AUTHORS);
     this.pluginRepository = pluginRepository;

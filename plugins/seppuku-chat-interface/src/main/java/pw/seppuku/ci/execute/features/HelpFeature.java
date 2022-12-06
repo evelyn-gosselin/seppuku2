@@ -9,6 +9,7 @@ import pw.seppuku.feature.execute.ExecutableFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
+import pw.seppuku.resolver.Inject;
 
 public final class HelpFeature extends ExecutableFeature {
 
@@ -23,6 +24,7 @@ public final class HelpFeature extends ExecutableFeature {
 
   private final FeatureRepository featureRepository;
 
+  @Inject
   public HelpFeature(final FeatureRepository featureRepository) {
     super(HELP_UNIQUE_IDENTIFIER, HELP_HUMAN_IDENTIFIER, HELP_VERSION, HELP_AUTHORS);
     this.featureRepository = featureRepository;

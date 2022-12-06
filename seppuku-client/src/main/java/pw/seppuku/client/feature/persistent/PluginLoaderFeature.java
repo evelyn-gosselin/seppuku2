@@ -13,17 +13,14 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import pw.seppuku.client.Seppuku;
-import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.events.SeppukuEventsPlugin;
-import pw.seppuku.feature.exception.FeatureException;
 import pw.seppuku.feature.persistent.PersistentFeature;
-import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.Plugin;
 import pw.seppuku.plugin.exception.exceptions.DuplicateUniqueIdentifierPluginException;
 import pw.seppuku.plugin.repository.PluginRepository;
+import pw.seppuku.resolver.Inject;
 import pw.seppuku.resolver.Resolver;
 
 // TODO: Clean this mess up... At some point... Maybe...
@@ -41,18 +38,13 @@ public final class PluginLoaderFeature extends PersistentFeature {
   private static final File PLUGIN_LOADER_DISCOVERY_DIRECTORY = new File("seppuku/plugins/");
 
   private final Resolver resolver;
-  private final EventBus eventBus;
-  private final FeatureRepository featureRepository;
   private final PluginRepository pluginRepository;
 
-  public PluginLoaderFeature(final Resolver resolver, final EventBus eventBus,
-      final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) {
+  @Inject
+  public PluginLoaderFeature(final Resolver resolver, final PluginRepository pluginRepository) {
     super(PLUGIN_LOADER_UNIQUE_IDENTIFIER, PLUGIN_LOADER_HUMAN_IDENTIFIER, PLUGIN_LOADER_VERSION,
         PLUGIN_LOADER_AUTHORS);
     this.resolver = resolver;
-    this.eventBus = eventBus;
-    this.featureRepository = featureRepository;
     this.pluginRepository = pluginRepository;
   }
 

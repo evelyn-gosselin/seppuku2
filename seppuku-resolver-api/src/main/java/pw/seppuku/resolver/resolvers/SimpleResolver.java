@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import pw.seppuku.resolver.Inject;
 import pw.seppuku.resolver.Resolver;
 
 public final class SimpleResolver implements Resolver {
@@ -52,8 +53,9 @@ public final class SimpleResolver implements Resolver {
 
   private <T> List<Constructor<T>> findAllConstructors(final Class<T> type) {
     //noinspection unchecked
-    return Arrays.stream(type.getConstructors()).map(constructor -> (Constructor<T>) constructor)
-        .toList();
+    return Arrays.stream(type.getConstructors())
+        .filter(constructor -> constructor.isAnnotationPresent(Inject.class))
+        .map(constructor -> (Constructor<T>) constructor).toList();
   }
 
   private <T> List<Constructor<T>> sortConstructorsByDependenciesMet(

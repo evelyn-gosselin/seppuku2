@@ -9,6 +9,7 @@ import pw.seppuku.events.minecraft.client.player.LocalPlayerSendPositionEvent;
 import pw.seppuku.feature.toggleable.ToggleableFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
+import pw.seppuku.resolver.Inject;
 
 public final class VanillaFlyFeature extends ToggleableFeature {
 
@@ -28,6 +29,7 @@ public final class VanillaFlyFeature extends ToggleableFeature {
 
   private final EventBus eventBus;
 
+  @Inject
   public VanillaFlyFeature(final EventBus eventBus) {
     super(SPRINT_UNIQUE_IDENTIFIER, SPRINT_HUMAN_IDENTIFIER, SPRINT_VERSION, SPRINT_AUTHORS);
     this.eventBus = eventBus;

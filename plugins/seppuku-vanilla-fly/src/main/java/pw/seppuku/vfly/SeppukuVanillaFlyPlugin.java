@@ -10,6 +10,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
+import pw.seppuku.resolver.Inject;
 import pw.seppuku.resolver.Resolver;
 import pw.seppuku.vfly.toggleable.features.VanillaFlyFeature;
 
@@ -27,6 +28,7 @@ public final class SeppukuVanillaFlyPlugin extends AbstractPlugin {
   private final Resolver resolver;
   private final FeatureRepository featureRepository;
 
+  @Inject
   public SeppukuVanillaFlyPlugin(final Resolver resolver,
       final FeatureRepository featureRepository) {
     super(SEPPUKU_VANILLA_FLY_UNIQUE_IDENTIFIER, SEPPUKU_VANILLA_FLY_HUMAN_IDENTIFIER,
