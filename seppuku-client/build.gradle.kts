@@ -3,6 +3,8 @@ plugins {
     id("fabric-loom")
 }
 
+version = "0.1.0"
+
 dependencies {
     minecraft("com.mojang:minecraft:1.19.2")
     mappings(loom.officialMojangMappings())
