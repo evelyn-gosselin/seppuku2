@@ -63,10 +63,7 @@ public final class SimpleFeatureRepository implements FeatureRepository {
   @Override
   public <T extends Feature> List<T> findFeaturesByClassAndPredicate(final Class<T> featureClass,
       final Predicate<T> predicate) {
-    return stream()
-        .filter(featureClass::isInstance)
-        .map(featureClass::cast)
-        .filter(predicate)
+    return stream().filter(featureClass::isInstance).map(featureClass::cast).filter(predicate)
         .toList();
   }
 
@@ -93,8 +90,7 @@ public final class SimpleFeatureRepository implements FeatureRepository {
   public <T extends Feature> T findFeatureByUniqueIdentifier(final UUID uniqueIdentifier,
       final Class<T> featureClass) throws CouldNotBeFoundFeatureException {
     return findFeaturesByClassAndPredicate(featureClass,
-        f -> f.uniqueIdentifier().equals(uniqueIdentifier)).stream()
-        .findFirst()
+        f -> f.uniqueIdentifier().equals(uniqueIdentifier)).stream().findFirst()
         .orElseThrow(() -> new CouldNotBeFoundFeatureException(uniqueIdentifier.toString()));
   }
 

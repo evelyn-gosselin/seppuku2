@@ -32,8 +32,7 @@ public final class ToggleFeature extends ExecutableFeature {
   public void execute(final String... rest) throws CouldNotBeFoundFeatureException {
     final var humanIdentifier = rest[0];
     final var toggleableFeature = featureRepository.findFeaturesByHumanIdentifier(humanIdentifier,
-            ToggleableFeature.class).stream()
-        .findFirst()
+            ToggleableFeature.class).stream().findFirst()
         .orElseThrow(() -> new CouldNotBeFoundFeatureException(humanIdentifier));
 
     toggleableFeature.setRunning(!toggleableFeature.isRunning());

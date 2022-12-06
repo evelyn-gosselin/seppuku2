@@ -33,15 +33,13 @@ public final class SimpleEventPublisher<T> implements EventPublisher<T> {
     // the predicate might not be evaluated for all elements
 
     //noinspection SimplifyStreamApiCallChains
-    return eventSubscribers.stream()
-        .map(eventSubscriber -> {
-          try {
-            return eventSubscriber.onPublication(eventToPublish);
-          } catch (final Exception exception) {
-            exception.printStackTrace();
-            return false;
-          }
-        })
-        .anyMatch(Boolean::booleanValue);
+    return eventSubscribers.stream().map(eventSubscriber -> {
+      try {
+        return eventSubscriber.onPublication(eventToPublish);
+      } catch (final Exception exception) {
+        exception.printStackTrace();
+        return false;
+      }
+    }).anyMatch(Boolean::booleanValue);
   }
 }

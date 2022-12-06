@@ -46,8 +46,7 @@ public final class ChatInterfaceFeature extends PersistentFeature {
       final var parts = Arrays.stream(content.split(" ")).collect(Collectors.toList());
       final var potentialFeatures = featureRepository.findFeaturesByHumanIdentifier(parts.get(0),
           ExecutableFeature.class);
-      final var feature = potentialFeatures.stream()
-          .findFirst()
+      final var feature = potentialFeatures.stream().findFirst()
           .orElseThrow(() -> new CouldNotBeFoundFeatureException(parts.get(0)));
 
       parts.remove(0);

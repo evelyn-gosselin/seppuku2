@@ -35,10 +35,8 @@ public final class HeadsUpFeature extends PersistentFeature {
 
     this.guiRenderEventSubscriber = event -> {
       final var y = new AtomicInteger(2);
-      featureRepository.stream()
-          .filter(ToggleableFeature.class::isInstance)
-          .map(ToggleableFeature.class::cast)
-          .filter(ToggleableFeature::isRunning)
+      featureRepository.stream().filter(ToggleableFeature.class::isInstance)
+          .map(ToggleableFeature.class::cast).filter(ToggleableFeature::isRunning)
           .forEach(toggleableFeature -> {
             event.gui().getFont()
                 .drawShadow(event.poseStack(), toggleableFeature.humanIdentifier(), 2, y.get(),

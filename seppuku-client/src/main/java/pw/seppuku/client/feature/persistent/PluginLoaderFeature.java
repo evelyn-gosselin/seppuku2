@@ -104,9 +104,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
           "Could not list files in directory " + PLUGIN_LOADER_DISCOVERY_DIRECTORY);
     }
 
-    return Arrays.stream(pluginFiles)
-        .filter(File::isFile)
-        .toList();
+    return Arrays.stream(pluginFiles).filter(File::isFile).toList();
   }
 
   private void addExternalPlugin(final File pluginFile) {
@@ -152,8 +150,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
   }
 
   private List<? extends ZipEntry> getPluginZipClassEntries(final ZipFile pluginZipFile) {
-    return pluginZipFile.stream()
-        .filter(zipEntry -> zipEntry.getName().endsWith(".class"))
+    return pluginZipFile.stream().filter(zipEntry -> zipEntry.getName().endsWith(".class"))
         .toList();
   }
 
@@ -176,17 +173,13 @@ public final class PluginLoaderFeature extends PersistentFeature {
   }
 
   private List<Plugin> createPluginInstances(final List<Class<?>> pluginClasses) {
-    return pluginClasses.stream()
-        .filter(Plugin.class::isAssignableFrom)
-        .map(pluginClass -> {
-          try {
-            return pluginClass.getConstructor().newInstance();
-          } catch (final InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
-            exception.printStackTrace();
-            throw new RuntimeException(exception);
-          }
-        })
-        .map(Plugin.class::cast)
-        .toList();
+    return pluginClasses.stream().filter(Plugin.class::isAssignableFrom).map(pluginClass -> {
+      try {
+        return pluginClass.getConstructor().newInstance();
+      } catch (final InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
+        exception.printStackTrace();
+        throw new RuntimeException(exception);
+      }
+    }).map(Plugin.class::cast).toList();
   }
 }

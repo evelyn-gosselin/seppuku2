@@ -15,8 +15,8 @@ public abstract class LocalPlayerMixin implements Actual<LocalPlayer> {
   @Inject(method = "sendPosition", at = @At("HEAD"), cancellable = true)
   private void onSendPositionHead(final CallbackInfo callback) {
     final var event = new LocalPlayerSendPositionEvent(actual());
-      if (Seppuku.instance().eventBus().publish(event)) {
-          callback.cancel();
-      }
+    if (Seppuku.instance().eventBus().publish(event)) {
+      callback.cancel();
+    }
   }
 }

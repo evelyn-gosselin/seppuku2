@@ -26,9 +26,9 @@ public final class Seppuku {
     featureRepository.add(pluginLoaderFeature);
     pluginLoaderFeature.load();
 
-    featureRepository.findFeaturesByClassAndPredicate(PersistentFeature.class, persistentFeature ->
-            persistentFeature.uniqueIdentifier() != pluginLoaderFeature.uniqueIdentifier())
-        .forEach(PersistentFeature::load);
+    featureRepository.findFeaturesByClassAndPredicate(PersistentFeature.class,
+        persistentFeature -> persistentFeature.uniqueIdentifier()
+            != pluginLoaderFeature.uniqueIdentifier()).forEach(PersistentFeature::load);
   }
 
   public static Seppuku instance() {
