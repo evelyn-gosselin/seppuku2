@@ -15,4 +15,8 @@ public interface Feature {
     Version version();
 
     List<Author> authors();
+
+    void load();
+
+    void unload();
 }

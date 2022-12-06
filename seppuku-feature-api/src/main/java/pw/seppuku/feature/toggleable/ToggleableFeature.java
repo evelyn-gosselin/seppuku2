@@ -15,10 +15,6 @@ public abstract class ToggleableFeature extends AbstractFeature {
         super(uniqueIdentifier, humanIdentifier, version, authors);
     }
 
-    public abstract void onActivation();
-
-    public abstract void onDeactivation();
-
     public final boolean isRunning() {
         return running;
     }
@@ -27,9 +23,9 @@ public abstract class ToggleableFeature extends AbstractFeature {
         this.running = running;
 
         if (running) {
-            onActivation();
+            load();
         } else {
-            onDeactivation();
+            unload();
         }
     }
 }

@@ -4,6 +4,8 @@ import pw.seppuku.feature.Feature;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 
 import java.util.Collection;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public interface FeatureRepository extends Iterable<Feature> {
 
@@ -14,4 +16,12 @@ public interface FeatureRepository extends Iterable<Feature> {
     <T extends Feature> void addAll(final Collection<? extends T> featuresToAdd) throws DuplicateUniqueIdentifierFeatureException;
 
     <T extends Feature> void removeAll(final Collection<? extends T> featuresToRemove);
+
+    default Stream<Feature> stream() {
+        return StreamSupport.stream(this.spliterator(), false);
+    }
+
+    default Stream<Feature> parallelStream() {
+        return StreamSupport.stream(this.spliterator(), true);
+    }
 }

@@ -6,7 +6,6 @@ import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.feature.Feature;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
-import pw.seppuku.feature.toggleable.ToggleableFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
@@ -32,22 +31,18 @@ public final class SeppukuCorePlugin extends AbstractPlugin {
     @Override
     public void load(final EventBus eventBus, final FeatureRepository featureRepository) throws DuplicateUniqueIdentifierFeatureException {
         features.addAll(List.of(
-                new HeadsUpDisplayFeature(eventBus),
+                new HeadsUpDisplayFeature(eventBus, featureRepository),
                 new SprintFeature(eventBus)
         ));
 
         featureRepository.addAll(features);
+        features.forEach(Feature::load);
     }
 
     @Override
     public void unload(final EventBus eventBus, final FeatureRepository featureRepository) {
         featureRepository.removeAll(features);
-
-        features.stream()
-                .filter(ToggleableFeature.class::isInstance)
-                .map(ToggleableFeature.class::cast)
-                .forEach(ToggleableFeature::onDeactivation);
-
+        features.forEach(Feature::unload);
         features.clear();
     }
 }
