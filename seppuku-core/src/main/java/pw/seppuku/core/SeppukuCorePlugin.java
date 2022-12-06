@@ -1,5 +1,6 @@
 package pw.seppuku.core;
 
+import pw.seppuku.core.feature.persistent.features.HeadsUpDisplayFeature;
 import pw.seppuku.core.feature.toggleable.features.SprintFeature;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.feature.Feature;
@@ -31,6 +32,7 @@ public final class SeppukuCorePlugin extends AbstractPlugin {
     @Override
     public void load(final EventBus eventBus, final FeatureRepository featureRepository) throws DuplicateUniqueIdentifierFeatureException {
         features.addAll(List.of(
+                new HeadsUpDisplayFeature(eventBus),
                 new SprintFeature(eventBus)
         ));
 
@@ -40,7 +42,7 @@ public final class SeppukuCorePlugin extends AbstractPlugin {
     @Override
     public void unload(final EventBus eventBus, final FeatureRepository featureRepository) {
         featureRepository.removeAll(features);
-        
+
         features.stream()
                 .filter(ToggleableFeature.class::isInstance)
                 .map(ToggleableFeature.class::cast)
