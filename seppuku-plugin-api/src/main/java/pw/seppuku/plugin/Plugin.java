@@ -1,6 +1,7 @@
 package pw.seppuku.plugin;
 
 import pw.seppuku.event.bus.EventBus;
+import pw.seppuku.feature.exception.FeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
@@ -19,7 +20,7 @@ public interface Plugin {
 
     List<Author> authors();
 
-    void load(final EventBus eventBus, final FeatureRepository featureRepository) throws DuplicateUniqueIdentifierFeatureException;
+    void load(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException;
 
-    void unload(final EventBus eventBus, final FeatureRepository featureRepository);
+    void unload(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException;
 }

@@ -3,6 +3,7 @@ package pw.seppuku.client.feature.persistent;
 import pw.seppuku.core.SeppukuCorePlugin;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.events.SeppukuEventsPlugin;
+import pw.seppuku.feature.exception.FeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.persistent.PersistentFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
@@ -43,7 +44,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
         for (final var plugin : pluginRepository) {
             try {
                 plugin.load(eventBus, featureRepository);
-            } catch (final DuplicateUniqueIdentifierFeatureException exception) {
+            } catch (final FeatureException exception) {
                 exception.printStackTrace();
                 throw new RuntimeException(exception);
             }
@@ -53,7 +54,12 @@ public final class PluginLoaderFeature extends PersistentFeature {
     @Override
     public void unload() {
         for (final var plugin : pluginRepository) {
-            plugin.unload(eventBus, featureRepository);
+            try {
+                plugin.unload(eventBus, featureRepository);
+            } catch (final FeatureException exception) {
+                exception.printStackTrace();
+                throw new RuntimeException(exception);
+            }
         }
     }
 
