@@ -1,12 +1,11 @@
 package pw.seppuku.plugin.exception.exceptions;
 
-import pw.seppuku.plugin.exception.PluginException;
-
 import java.util.UUID;
+import pw.seppuku.plugin.exception.PluginException;
 
 public final class DuplicateUniqueIdentifierPluginException extends PluginException {
 
-    public DuplicateUniqueIdentifierPluginException(final UUID uniqueIdentifier) {
-        super("Duplicate unique identifier " + uniqueIdentifier);
-    }
+  public DuplicateUniqueIdentifierPluginException(final UUID uniqueIdentifier) {
+    super("Duplicate unique identifier " + uniqueIdentifier);
+  }
 }

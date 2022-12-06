@@ -12,48 +12,51 @@ import pw.seppuku.plugin.repository.PluginRepository;
 import pw.seppuku.plugin.repository.repositories.SimplePluginRepository;
 
 public final class Seppuku {
-    private static volatile Seppuku instance = null;
 
-    private final EventBus eventBus = new SimpleEventBus();
-    private final FeatureRepository featureRepository = new SimpleFeatureRepository();
-    private final PluginRepository pluginRepository = new SimplePluginRepository();
+  private static volatile Seppuku instance = null;
 
-    private Seppuku() throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException {
-        final var pluginLoaderFeature = new PluginLoaderFeature(eventBus, featureRepository, pluginRepository);
-        featureRepository.add(pluginLoaderFeature);
-        pluginLoaderFeature.load();
+  private final EventBus eventBus = new SimpleEventBus();
+  private final FeatureRepository featureRepository = new SimpleFeatureRepository();
+  private final PluginRepository pluginRepository = new SimplePluginRepository();
 
-        featureRepository.findFeaturesByClassAndPredicate(PersistentFeature.class, persistentFeature ->
-                        persistentFeature.uniqueIdentifier() != pluginLoaderFeature.uniqueIdentifier())
-                .forEach(PersistentFeature::load);
-    }
+  private Seppuku()
+      throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException {
+    final var pluginLoaderFeature = new PluginLoaderFeature(eventBus, featureRepository,
+        pluginRepository);
+    featureRepository.add(pluginLoaderFeature);
+    pluginLoaderFeature.load();
 
-    public static Seppuku instance() {
+    featureRepository.findFeaturesByClassAndPredicate(PersistentFeature.class, persistentFeature ->
+            persistentFeature.uniqueIdentifier() != pluginLoaderFeature.uniqueIdentifier())
+        .forEach(PersistentFeature::load);
+  }
+
+  public static Seppuku instance() {
+    if (instance == null) {
+      synchronized (Seppuku.class) {
         if (instance == null) {
-            synchronized (Seppuku.class) {
-                if (instance == null) {
-                    try {
-                        instance = new Seppuku();
-                    } catch (final DuplicateUniqueIdentifierFeatureException | CouldNotBeFoundFeatureException exception) {
-                        exception.printStackTrace();
-                        throw new RuntimeException(exception);
-                    }
-                }
-            }
+          try {
+            instance = new Seppuku();
+          } catch (final DuplicateUniqueIdentifierFeatureException | CouldNotBeFoundFeatureException exception) {
+            exception.printStackTrace();
+            throw new RuntimeException(exception);
+          }
         }
-
-        return instance;
+      }
     }
 
-    public EventBus eventBus() {
-        return eventBus;
-    }
+    return instance;
+  }
 
-    public FeatureRepository featureRepository() {
-        return featureRepository;
-    }
+  public EventBus eventBus() {
+    return eventBus;
+  }
 
-    public PluginRepository pluginRepository() {
-        return pluginRepository;
-    }
+  public FeatureRepository featureRepository() {
+    return featureRepository;
+  }
+
+  public PluginRepository pluginRepository() {
+    return pluginRepository;
+  }
 }

@@ -12,11 +12,12 @@ import pw.seppuku.mixin.Actual;
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin implements Actual<ChatScreen> {
 
-    @Inject(method = "handleChatInput", at = @At("HEAD"), cancellable = true)
-    private void onHandleChatInput(final String string, final boolean bl, final CallbackInfoReturnable<Boolean> callback) {
-        final var event = new ChatScreenHandleInputEvent(actual(), string);
-        if (Seppuku.instance().eventBus().publish(event)) {
-            callback.setReturnValue(true);
-        }
+  @Inject(method = "handleChatInput", at = @At("HEAD"), cancellable = true)
+  private void onHandleChatInput(final String string, final boolean bl,
+      final CallbackInfoReturnable<Boolean> callback) {
+    final var event = new ChatScreenHandleInputEvent(actual(), string);
+    if (Seppuku.instance().eventBus().publish(event)) {
+      callback.setReturnValue(true);
     }
+  }
 }

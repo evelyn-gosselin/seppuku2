@@ -13,8 +13,8 @@ import pw.seppuku.mixin.Actual;
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin implements Actual<Minecraft> {
 
-    @Inject(method = "<init>", at = @At("TAIL"))
-    private void onConstructorTail(final GameConfig gameConfig, final CallbackInfo callback) {
-        Seppuku.instance().eventBus().publish(new MinecraftConstructorEvent(actual()));
-    }
+  @Inject(method = "<init>", at = @At("TAIL"))
+  private void onConstructorTail(final GameConfig gameConfig, final CallbackInfo callback) {
+    Seppuku.instance().eventBus().publish(new MinecraftConstructorEvent(actual()));
+  }
 }

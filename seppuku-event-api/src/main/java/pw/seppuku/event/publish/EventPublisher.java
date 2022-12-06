@@ -4,9 +4,9 @@ import pw.seppuku.event.subscribe.EventSubscriber;
 
 public interface EventPublisher<T> {
 
-    void subscribe(final EventSubscriber<T> subscriber);
+  void subscribe(final EventSubscriber<T> subscriber);
 
-    void unsubscribe(final EventSubscriber<T> subscriber);
+  void unsubscribe(final EventSubscriber<T> subscriber);
 
-    boolean publish(final T event);
+  boolean publish(final T event);
 }

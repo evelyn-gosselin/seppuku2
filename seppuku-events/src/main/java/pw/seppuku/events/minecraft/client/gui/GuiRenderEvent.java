@@ -5,14 +5,14 @@ import net.minecraft.client.gui.Gui;
 
 public final class GuiRenderEvent extends GuiEvent {
 
-    private final PoseStack poseStack;
+  private final PoseStack poseStack;
 
-    public GuiRenderEvent(final Gui gui, final PoseStack poseStack) {
-        super(gui);
-        this.poseStack = poseStack;
-    }
+  public GuiRenderEvent(final Gui gui, final PoseStack poseStack) {
+    super(gui);
+    this.poseStack = poseStack;
+  }
 
-    public PoseStack poseStack() {
-        return poseStack;
-    }
+  public PoseStack poseStack() {
+    return poseStack;
+  }
 }

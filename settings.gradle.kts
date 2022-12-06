@@ -15,18 +15,18 @@ pluginManagement {
 }
 
 include(
-    "seppuku-client",
+        "seppuku-client",
 
-    "seppuku-events",
+        "seppuku-events",
 
-    "seppuku-metadata-api",
-    "seppuku-event-api",
-    "seppuku-feature-api",
-    "seppuku-mixins-api",
-    "seppuku-plugin-api",
+        "seppuku-metadata-api",
+        "seppuku-event-api",
+        "seppuku-feature-api",
+        "seppuku-mixins-api",
+        "seppuku-plugin-api",
 
-    "plugins:seppuku-chat-interface",
-    "plugins:seppuku-heads-up",
-    "plugins:seppuku-sprint",
-    "plugins:seppuku-vanilla-fly",
+        "plugins:seppuku-chat-interface",
+        "plugins:seppuku-heads-up",
+        "plugins:seppuku-sprint",
+        "plugins:seppuku-vanilla-fly",
 )
