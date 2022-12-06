@@ -31,12 +31,12 @@ public final class SprintFeature extends ToggleableFeature {
     }
 
     @Override
-    protected void onActivation() {
+    public void onActivation() {
         eventBus.subscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER);
     }
 
     @Override
-    protected void onDeactivation() {
+    public void onDeactivation() {
         eventBus.unsubscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER);
     }
 }
