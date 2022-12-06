@@ -35,7 +35,14 @@ public final class SimpleEventPublisher<T> implements EventPublisher<T> {
 
         //noinspection SimplifyStreamApiCallChains
         return eventSubscribers.stream()
-                .map(eventSubscriber -> eventSubscriber.onPublication(eventToPublish))
+                .map(eventSubscriber -> {
+                    try {
+                        return eventSubscriber.onPublication(eventToPublish);
+                    } catch (final Exception exception) {
+                        exception.printStackTrace();
+                        return false;
+                    }
+                })
                 .anyMatch(Boolean::booleanValue);
     }
 }
