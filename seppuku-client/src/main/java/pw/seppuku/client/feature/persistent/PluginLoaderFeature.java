@@ -56,7 +56,6 @@ public final class PluginLoaderFeature extends PersistentFeature {
                 plugin.load(eventBus, featureRepository);
             } catch (final FeatureException exception) {
                 exception.printStackTrace();
-                throw new RuntimeException(exception);
             }
         }
     }
@@ -68,7 +67,6 @@ public final class PluginLoaderFeature extends PersistentFeature {
                 plugin.unload(eventBus, featureRepository);
             } catch (final FeatureException exception) {
                 exception.printStackTrace();
-                throw new RuntimeException(exception);
             }
         }
     }
