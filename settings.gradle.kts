@@ -16,6 +16,13 @@ pluginManagement {
 
 include(
     "seppuku-client",
+
+    "seppuku-events",
+    "seppuku-core",
+
+    "seppuku-metadata-api",
+    "seppuku-event-api",
     "seppuku-feature-api",
-    "seppuku-metadata-api"
+    "seppuku-mixins-api",
+    "seppuku-plugin-api",
 )

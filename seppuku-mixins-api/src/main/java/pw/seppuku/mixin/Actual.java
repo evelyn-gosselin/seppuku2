@@ -1,8 +1,8 @@
-package pw.seppuku.client.mixin;
+package pw.seppuku.mixin;
 
 public interface Actual<T> {
 
-    default T toActual() {
+    default T actual() {
         //noinspection unchecked
         return (T) this;
     }

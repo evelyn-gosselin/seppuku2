@@ -9,12 +9,10 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:0.14.11")
 
     implementation(project(":seppuku-events", configuration = "namedElements"))
-    implementation(project(":seppuku-core", configuration = "namedElements"))
 
     implementation(project(":seppuku-metadata-api"))
     implementation(project(":seppuku-event-api"))
     implementation(project(":seppuku-feature-api"))
-    implementation(project(":seppuku-mixins-api"))
     implementation(project(":seppuku-plugin-api"))
 }
 

@@ -1,4 +1,4 @@
-package pw.seppuku.feature.repository.repos;
+package pw.seppuku.feature.repository.repositories;
 
 import pw.seppuku.feature.Feature;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;

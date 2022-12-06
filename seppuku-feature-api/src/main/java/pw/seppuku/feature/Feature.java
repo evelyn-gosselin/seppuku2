@@ -16,4 +16,3 @@ public interface Feature {
 
     List<Author> authors();
 }
-
