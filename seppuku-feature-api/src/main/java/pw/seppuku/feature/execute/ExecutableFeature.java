@@ -13,5 +13,5 @@ public abstract class ExecutableFeature extends AbstractFeature {
         super(uniqueIdentifier, humanIdentifier, version, authors);
     }
 
-    public abstract void execute(final String... rest);
+    public abstract void execute(final String... rest) throws Exception;
 }

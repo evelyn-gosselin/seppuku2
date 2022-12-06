@@ -1,6 +1,7 @@
 package pw.seppuku.ci.execute.features;
 
 import pw.seppuku.feature.Feature;
+import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.execute.ExecutableFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
@@ -24,11 +25,11 @@ public final class HelpFeature extends ExecutableFeature {
     }
 
     @Override
-    public void execute(final String... rest) {
+    public void execute(final String... rest) throws CouldNotBeFoundFeatureException {
         final var humanIdentifier = rest[0];
         final var feature = featureRepository.findFeaturesByHumanIdentifier(humanIdentifier, Feature.class).stream()
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new CouldNotBeFoundFeatureException(humanIdentifier));
 
         // TODO: Sprint to chat
         System.out.println(feature.uniqueIdentifier());

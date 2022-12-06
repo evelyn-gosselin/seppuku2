@@ -45,7 +45,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
     @Override
     public void load() {
         if (!PLUGIN_LOADER_DISCOVERY_DIRECTORY.exists() && !PLUGIN_LOADER_DISCOVERY_DIRECTORY.mkdirs()) {
-            throw new RuntimeException();
+            throw new RuntimeException("Could not create directory " + PLUGIN_LOADER_DISCOVERY_DIRECTORY);
         }
 
         addBundledEventsPlugin();
@@ -92,7 +92,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
     private List<File> discoverExternalPluginFiles() {
         final var pluginFiles = PLUGIN_LOADER_DISCOVERY_DIRECTORY.listFiles();
         if (pluginFiles == null) {
-            throw new RuntimeException();
+            throw new RuntimeException("Could not list files in directory " + PLUGIN_LOADER_DISCOVERY_DIRECTORY);
         }
 
         return Arrays.stream(pluginFiles)

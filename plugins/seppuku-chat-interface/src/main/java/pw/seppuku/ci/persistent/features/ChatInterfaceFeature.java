@@ -3,6 +3,7 @@ package pw.seppuku.ci.persistent.features;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.subscribe.EventSubscriber;
 import pw.seppuku.events.minecraft.client.gui.screens.ChatScreenHandleInputEvent;
+import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.execute.ExecutableFeature;
 import pw.seppuku.feature.persistent.PersistentFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
@@ -42,7 +43,7 @@ public final class ChatInterfaceFeature extends PersistentFeature {
             final var potentialFeatures = featureRepository.findFeaturesByHumanIdentifier(parts.get(0), ExecutableFeature.class);
             final var feature = potentialFeatures.stream()
                     .findFirst()
-                    .orElseThrow(RuntimeException::new); // TODO: Own exception, message and catch print to chat
+                    .orElseThrow(() -> new CouldNotBeFoundFeatureException(parts.get(0)));
 
             parts.remove(0);
             feature.execute(parts.toArray(String[]::new));

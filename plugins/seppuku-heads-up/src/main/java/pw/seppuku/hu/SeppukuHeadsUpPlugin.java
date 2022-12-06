@@ -2,6 +2,8 @@ package pw.seppuku.hu;
 
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.feature.exception.FeatureException;
+import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
+import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.hu.persistent.features.HeadsUpFeature;
 import pw.seppuku.metadata.Author;
@@ -24,13 +26,13 @@ public final class SeppukuHeadsUpPlugin extends AbstractPlugin {
     }
 
     @Override
-    public void load(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException {
+    public void load(final EventBus eventBus, final FeatureRepository featureRepository) throws DuplicateUniqueIdentifierFeatureException {
         final var headsUp = new HeadsUpFeature(eventBus, featureRepository);
         featureRepository.add(headsUp);
     }
 
     @Override
-    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException {
+    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) throws CouldNotBeFoundFeatureException {
         final var headsUp = featureRepository.findFeatureByClass(HeadsUpFeature.class);
         featureRepository.remove(headsUp);
     }

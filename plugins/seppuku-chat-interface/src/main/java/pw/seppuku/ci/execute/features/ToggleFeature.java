@@ -1,6 +1,7 @@
 package pw.seppuku.ci.execute.features;
 
 import pw.seppuku.feature.Feature;
+import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.execute.ExecutableFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.toggleable.ToggleableFeature;
@@ -29,7 +30,7 @@ public final class ToggleFeature extends ExecutableFeature {
         final var humanIdentifier = rest[0];
         final var toggleableFeature = featureRepository.findFeaturesByHumanIdentifier(humanIdentifier, ToggleableFeature.class).stream()
                 .findFirst()
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new CouldNotBeFoundFeatureException(humanIdentifier));
 
         toggleableFeature.setRunning(!toggleableFeature.isRunning());
     }
