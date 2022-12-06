@@ -25,4 +25,6 @@ include(
     "seppuku-feature-api",
     "seppuku-mixins-api",
     "seppuku-plugin-api",
+
+    "plugins:seppuku-sprint",
 )

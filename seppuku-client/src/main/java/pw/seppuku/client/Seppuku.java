@@ -9,6 +9,7 @@ import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.repository.repositories.SimpleFeatureRepository;
+import pw.seppuku.feature.toggleable.ToggleableFeature;
 import pw.seppuku.plugin.exception.exceptions.DuplicateUniqueIdentifierPluginException;
 import pw.seppuku.plugin.repository.PluginRepository;
 import pw.seppuku.plugin.repository.repositories.SimplePluginRepository;
