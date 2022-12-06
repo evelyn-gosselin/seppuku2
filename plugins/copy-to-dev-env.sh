@@ -1,3 +1,6 @@
 #!/usr/bin/env sh
 
-cp */build/devlibs/*.jar ../seppuku-client/run/seppuku/plugins/
+for f in */build/devlibs/*.jar; do
+	echo "cp '$f' -> '../seppuku-client/run/seppuku/plugins/'"
+	cp "$f" ../seppuku-client/run/seppuku/plugins/
+done
