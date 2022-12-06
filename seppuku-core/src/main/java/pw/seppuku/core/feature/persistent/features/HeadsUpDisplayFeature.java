@@ -30,16 +30,14 @@ public final class HeadsUpDisplayFeature extends PersistentFeature {
         this.eventBus = eventBus;
 
         this.guiRenderEventEventSubscriber = event -> {
-            event.gui().getFont().drawShadow(event.poseStack(), "Seppuku", 2, 2, 0xffffff);
-
-            final var y = new AtomicInteger(4 + event.gui().getFont().lineHeight);
+            final var y = new AtomicInteger(2);
             featureRepository.stream()
                     .filter(ToggleableFeature.class::isInstance)
                     .map(ToggleableFeature.class::cast)
                     .filter(ToggleableFeature::isRunning)
                     .forEach(toggleableFeature -> {
                         event.gui().getFont().drawShadow(event.poseStack(), toggleableFeature.humanIdentifier(), 2, y.get(), 0xffffff);
-                        y.addAndGet(4 + event.gui().getFont().lineHeight);
+                        y.addAndGet(2 + event.gui().getFont().lineHeight);
                     });
 
             return false;
