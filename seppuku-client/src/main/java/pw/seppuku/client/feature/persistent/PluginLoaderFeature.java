@@ -1,6 +1,5 @@
 package pw.seppuku.client.feature.persistent;
 
-import pw.seppuku.core.SeppukuCorePlugin;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.events.SeppukuEventsPlugin;
 import pw.seppuku.feature.exception.FeatureException;
@@ -50,7 +49,6 @@ public final class PluginLoaderFeature extends PersistentFeature {
         }
 
         addBundledEventsPlugin();
-        addBundledCorePlugin();
         addExternalPlugins();
 
         for (final var plugin : pluginRepository) {
@@ -80,17 +78,6 @@ public final class PluginLoaderFeature extends PersistentFeature {
 
         try {
             pluginRepository.add(seppukuEventsPlugin);
-        } catch (final DuplicateUniqueIdentifierPluginException exception) {
-            exception.printStackTrace();
-            throw new RuntimeException(exception);
-        }
-    }
-
-    private void addBundledCorePlugin() {
-        final var seppukuCorePlugin = new SeppukuCorePlugin();
-
-        try {
-            pluginRepository.add(seppukuCorePlugin);
         } catch (final DuplicateUniqueIdentifierPluginException exception) {
             exception.printStackTrace();
             throw new RuntimeException(exception);

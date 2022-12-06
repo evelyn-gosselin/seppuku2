@@ -19,10 +19,13 @@ public final class Seppuku {
     private final PluginRepository pluginRepository = new SimplePluginRepository();
 
     private Seppuku() throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException {
-        featureRepository.add(new PluginLoaderFeature(eventBus, featureRepository, pluginRepository));
-        featureRepository.findFeatureByClass(PluginLoaderFeature.class).load();
+        final var pluginLoaderFeature = new PluginLoaderFeature(eventBus, featureRepository, pluginRepository);
+        featureRepository.add(pluginLoaderFeature);
+        pluginLoaderFeature.load();
 
-        featureRepository.findFeaturesByClass(PersistentFeature.class).forEach(PersistentFeature::load);
+        featureRepository.findFeaturesByClassAndPredicate(PersistentFeature.class, persistentFeature ->
+                persistentFeature.uniqueIdentifier() != pluginLoaderFeature.uniqueIdentifier())
+                .forEach(PersistentFeature::load);
     }
 
     public static Seppuku instance() {
