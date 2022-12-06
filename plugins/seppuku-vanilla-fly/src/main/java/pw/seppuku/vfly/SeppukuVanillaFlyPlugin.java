@@ -1,15 +1,16 @@
 package pw.seppuku.vfly;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.feature.exception.FeatureException;
+import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
-import pw.seppuku.plugin.repository.PluginRepository;
+import pw.seppuku.resolver.Resolver;
 import pw.seppuku.vfly.toggleable.features.VanillaFlyFeature;
 
 public final class SeppukuVanillaFlyPlugin extends AbstractPlugin {
@@ -23,21 +24,25 @@ public final class SeppukuVanillaFlyPlugin extends AbstractPlugin {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  public SeppukuVanillaFlyPlugin() {
+  private final Resolver resolver;
+  private final FeatureRepository featureRepository;
+
+  public SeppukuVanillaFlyPlugin(final Resolver resolver,
+      final FeatureRepository featureRepository) {
     super(SEPPUKU_VANILLA_FLY_UNIQUE_IDENTIFIER, SEPPUKU_VANILLA_FLY_HUMAN_IDENTIFIER,
         SEPPUKU_VANILLA_FLY_VERSION, SEPPUKU_VANILLA_FLY_AUTHORS);
+    this.resolver = resolver;
+    this.featureRepository = featureRepository;
   }
 
   @Override
-  public void load(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws FeatureException {
-    final var vanillaFly = new VanillaFlyFeature(eventBus);
-    featureRepository.add(vanillaFly);
+  public void load()
+      throws InvocationTargetException, InstantiationException, IllegalAccessException, DuplicateUniqueIdentifierFeatureException {
+    featureRepository.add(resolver.resolveDependenciesAndCreate(VanillaFlyFeature.class));
   }
 
   @Override
-  public void unload(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws FeatureException {
+  public void unload() throws FeatureException {
     final var vanillaFly = featureRepository.findFeatureByClass(VanillaFlyFeature.class);
     featureRepository.remove(vanillaFly);
   }

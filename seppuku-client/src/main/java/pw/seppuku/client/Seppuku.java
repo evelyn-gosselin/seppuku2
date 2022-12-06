@@ -1,5 +1,7 @@
 package pw.seppuku.client;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import pw.seppuku.client.feature.persistent.PluginLoaderFeature;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.bus.buses.SimpleEventBus;
@@ -10,19 +12,24 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.repository.repositories.SimpleFeatureRepository;
 import pw.seppuku.plugin.repository.PluginRepository;
 import pw.seppuku.plugin.repository.repositories.SimplePluginRepository;
+import pw.seppuku.resolver.Resolver;
+import pw.seppuku.resolver.resolvers.SimpleResolver;
 
 public final class Seppuku {
 
   private static volatile Seppuku instance = null;
 
-  private final EventBus eventBus = new SimpleEventBus();
-  private final FeatureRepository featureRepository = new SimpleFeatureRepository();
-  private final PluginRepository pluginRepository = new SimplePluginRepository();
+  private final Resolver resolver = new SimpleResolver(
+      Map.of(EventBus.class, new SimpleEventBus(), FeatureRepository.class,
+          new SimpleFeatureRepository(), PluginRepository.class, new SimplePluginRepository()));
 
   private Seppuku()
-      throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException {
-    final var pluginLoaderFeature = new PluginLoaderFeature(eventBus, featureRepository,
-        pluginRepository);
+      throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    final var featureRepository = resolver.resolveDependency(FeatureRepository.class);
+
+    final var pluginLoaderFeature = resolver.resolveDependenciesAndCreate(
+        PluginLoaderFeature.class);
+
     featureRepository.add(pluginLoaderFeature);
     pluginLoaderFeature.load();
 
@@ -37,7 +44,7 @@ public final class Seppuku {
         if (instance == null) {
           try {
             instance = new Seppuku();
-          } catch (final DuplicateUniqueIdentifierFeatureException | CouldNotBeFoundFeatureException exception) {
+          } catch (final DuplicateUniqueIdentifierFeatureException | CouldNotBeFoundFeatureException | InvocationTargetException | InstantiationException | IllegalAccessException exception) {
             exception.printStackTrace();
             throw new RuntimeException(exception);
           }
@@ -48,15 +55,19 @@ public final class Seppuku {
     return instance;
   }
 
+  public Resolver resolver() {
+    return resolver;
+  }
+
   public EventBus eventBus() {
-    return eventBus;
+    return resolver.resolveDependency(EventBus.class);
   }
 
   public FeatureRepository featureRepository() {
-    return featureRepository;
+    return resolver.resolveDependency(FeatureRepository.class);
   }
 
   public PluginRepository pluginRepository() {
-    return pluginRepository;
+    return resolver.resolveDependency(PluginRepository.class);
   }
 }

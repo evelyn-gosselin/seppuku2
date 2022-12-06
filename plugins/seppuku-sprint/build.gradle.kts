@@ -16,4 +16,5 @@ dependencies {
     implementation(project(":seppuku-event-api"))
     implementation(project(":seppuku-feature-api"))
     implementation(project(":seppuku-plugin-api"))
+    implementation(project(":seppuku-resolver-api"))
 }

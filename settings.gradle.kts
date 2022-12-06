@@ -24,6 +24,7 @@ include(
     "seppuku-feature-api",
     "seppuku-mixins-api",
     "seppuku-plugin-api",
+    "seppuku-resolver-api",
 
     "plugins:seppuku-chat-interface",
     "plugins:seppuku-heads-up",

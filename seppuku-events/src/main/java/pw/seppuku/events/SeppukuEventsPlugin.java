@@ -27,12 +27,10 @@ public final class SeppukuEventsPlugin extends AbstractPlugin {
   }
 
   @Override
-  public void load(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) {
+  public void load() {
   }
 
   @Override
-  public void unload(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) {
+  public void unload() {
   }
 }

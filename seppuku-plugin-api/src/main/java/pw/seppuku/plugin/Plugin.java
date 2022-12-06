@@ -19,9 +19,7 @@ public interface Plugin {
 
   List<Author> authors();
 
-  void load(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws FeatureException;
+  void load() throws Exception;
 
-  void unload(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws FeatureException;
+  void unload() throws Exception;
 }

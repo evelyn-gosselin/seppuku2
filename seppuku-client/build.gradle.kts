@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":seppuku-feature-api"))
     implementation(project(":seppuku-mixins-api"))
     implementation(project(":seppuku-plugin-api"))
+    implementation(project(":seppuku-resolver-api"))
 }
 
 tasks {

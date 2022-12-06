@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import pw.seppuku.client.Seppuku;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.events.SeppukuEventsPlugin;
 import pw.seppuku.feature.exception.FeatureException;
@@ -23,6 +24,7 @@ import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.Plugin;
 import pw.seppuku.plugin.exception.exceptions.DuplicateUniqueIdentifierPluginException;
 import pw.seppuku.plugin.repository.PluginRepository;
+import pw.seppuku.resolver.Resolver;
 
 // TODO: Clean this mess up... At some point... Maybe...
 public final class PluginLoaderFeature extends PersistentFeature {
@@ -38,14 +40,17 @@ public final class PluginLoaderFeature extends PersistentFeature {
 
   private static final File PLUGIN_LOADER_DISCOVERY_DIRECTORY = new File("seppuku/plugins/");
 
+  private final Resolver resolver;
   private final EventBus eventBus;
   private final FeatureRepository featureRepository;
   private final PluginRepository pluginRepository;
 
-  public PluginLoaderFeature(final EventBus eventBus, final FeatureRepository featureRepository,
+  public PluginLoaderFeature(final Resolver resolver, final EventBus eventBus,
+      final FeatureRepository featureRepository,
       final PluginRepository pluginRepository) {
     super(PLUGIN_LOADER_UNIQUE_IDENTIFIER, PLUGIN_LOADER_HUMAN_IDENTIFIER, PLUGIN_LOADER_VERSION,
         PLUGIN_LOADER_AUTHORS);
+    this.resolver = resolver;
     this.eventBus = eventBus;
     this.featureRepository = featureRepository;
     this.pluginRepository = pluginRepository;
@@ -63,8 +68,8 @@ public final class PluginLoaderFeature extends PersistentFeature {
 
     for (final var plugin : pluginRepository) {
       try {
-        plugin.load(eventBus, featureRepository, pluginRepository);
-      } catch (final FeatureException exception) {
+        plugin.load();
+      } catch (final Exception exception) {
         exception.printStackTrace();
       }
     }
@@ -74,8 +79,8 @@ public final class PluginLoaderFeature extends PersistentFeature {
   public void unload() {
     for (final var plugin : pluginRepository) {
       try {
-        plugin.unload(eventBus, featureRepository, pluginRepository);
-      } catch (final FeatureException exception) {
+        plugin.unload();
+      } catch (final Exception exception) {
         exception.printStackTrace();
       }
     }
@@ -175,8 +180,8 @@ public final class PluginLoaderFeature extends PersistentFeature {
   private List<Plugin> createPluginInstances(final List<Class<?>> pluginClasses) {
     return pluginClasses.stream().filter(Plugin.class::isAssignableFrom).map(pluginClass -> {
       try {
-        return pluginClass.getConstructor().newInstance();
-      } catch (final InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException exception) {
+        return resolver.resolveDependenciesAndCreate(pluginClass);
+      } catch (final InstantiationException | IllegalAccessException | InvocationTargetException exception) {
         exception.printStackTrace();
         throw new RuntimeException(exception);
       }

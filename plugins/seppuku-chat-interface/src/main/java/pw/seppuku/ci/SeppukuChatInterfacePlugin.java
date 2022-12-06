@@ -1,5 +1,6 @@
 package pw.seppuku.ci;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,6 +16,7 @@ import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
 import pw.seppuku.plugin.repository.PluginRepository;
+import pw.seppuku.resolver.Resolver;
 
 public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
 
@@ -27,30 +29,28 @@ public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  public SeppukuChatInterfacePlugin() {
+  private final Resolver resolver;
+  private final FeatureRepository featureRepository;
+
+  public SeppukuChatInterfacePlugin(final Resolver resolver,
+      final FeatureRepository featureRepository, final PluginRepository pluginRepository) {
     super(CHAT_INTERFACE_UNIQUE_IDENTIFIER, CHAT_INTERFACE_HUMAN_IDENTIFIER, CHAT_INTERFACE_VERSION,
         CHAT_INTERFACE_AUTHORS);
+    this.resolver = resolver;
+    this.featureRepository = featureRepository;
   }
 
   @Override
-  public void load(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws DuplicateUniqueIdentifierFeatureException {
-    final var chatInterface = new ChatInterfaceFeature(eventBus, featureRepository);
-    featureRepository.add(chatInterface);
-
-    final var helpFeature = new HelpFeature(featureRepository);
-    featureRepository.add(helpFeature);
-
-    final var pluginsFeature = new PluginsFeature(pluginRepository);
-    featureRepository.add(pluginsFeature);
-
-    final var toggleFeature = new ToggleFeature(featureRepository);
-    featureRepository.add(toggleFeature);
+  public void load()
+      throws InvocationTargetException, InstantiationException, IllegalAccessException, DuplicateUniqueIdentifierFeatureException {
+    featureRepository.add(resolver.resolveDependenciesAndCreate(ChatInterfaceFeature.class));
+    featureRepository.add(resolver.resolveDependenciesAndCreate(HelpFeature.class));
+    featureRepository.add(resolver.resolveDependenciesAndCreate(PluginsFeature.class));
+    featureRepository.add(resolver.resolveDependenciesAndCreate(ToggleFeature.class));
   }
 
   @Override
-  public void unload(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws CouldNotBeFoundFeatureException {
+  public void unload() throws CouldNotBeFoundFeatureException {
     final var chatInterface = featureRepository.findFeatureByClass(ChatInterfaceFeature.class);
     featureRepository.remove(chatInterface);
 

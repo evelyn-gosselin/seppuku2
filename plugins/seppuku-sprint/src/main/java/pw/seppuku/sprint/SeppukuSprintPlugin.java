@@ -1,15 +1,16 @@
 package pw.seppuku.sprint;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import pw.seppuku.event.bus.EventBus;
-import pw.seppuku.feature.exception.FeatureException;
+import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
+import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
-import pw.seppuku.plugin.repository.PluginRepository;
+import pw.seppuku.resolver.Resolver;
 import pw.seppuku.sprint.toggleable.features.SprintFeature;
 
 public final class SeppukuSprintPlugin extends AbstractPlugin {
@@ -23,21 +24,24 @@ public final class SeppukuSprintPlugin extends AbstractPlugin {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  public SeppukuSprintPlugin() {
+  private final Resolver resolver;
+  private final FeatureRepository featureRepository;
+
+  public SeppukuSprintPlugin(final Resolver resolver, final FeatureRepository featureRepository) {
     super(SEPPUKU_SPRINT_UNIQUE_IDENTIFIER, SEPPUKU_SPRINT_HUMAN_IDENTIFIER, SEPPUKU_SPRINT_VERSION,
         SEPPUKU_SPRINT_AUTHORS);
+    this.resolver = resolver;
+    this.featureRepository = featureRepository;
   }
 
   @Override
-  public void load(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws FeatureException {
-    final var sprint = new SprintFeature(eventBus);
-    featureRepository.add(sprint);
+  public void load()
+      throws InvocationTargetException, InstantiationException, IllegalAccessException, DuplicateUniqueIdentifierFeatureException {
+    featureRepository.add(resolver.resolveDependenciesAndCreate(SprintFeature.class));
   }
 
   @Override
-  public void unload(final EventBus eventBus, final FeatureRepository featureRepository,
-      final PluginRepository pluginRepository) throws FeatureException {
+  public void unload() throws CouldNotBeFoundFeatureException {
     final var sprint = featureRepository.findFeatureByClass(SprintFeature.class);
     featureRepository.remove(sprint);
   }
