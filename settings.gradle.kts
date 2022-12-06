@@ -28,4 +28,5 @@ include(
     "plugins:seppuku-chat-interface",
     "plugins:seppuku-heads-up",
     "plugins:seppuku-sprint",
+    "plugins:seppuku-vanilla-fly",
 )
