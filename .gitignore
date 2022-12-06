@@ -1,10 +1,10 @@
 # IntelliJ
-out
-build
-.idea
+**/out/
+**/build/
+**/.idea/
 
 # Gradle
-.gradle
+**/.gradle/
 
 # Fabric
-run
+**/run/
