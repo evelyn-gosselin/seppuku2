@@ -51,6 +51,14 @@ public final class SimpleFeatureRepository implements FeatureRepository {
     }
 
     @Override
+    public <T extends Feature> List<T> findFeaturesByClass(final Class<T> featureClass) {
+        return stream()
+                .filter(featureClass::isInstance)
+                .map(featureClass::cast)
+                .toList();
+    }
+
+    @Override
     public Iterator<Feature> iterator() {
         return features.iterator();
     }
