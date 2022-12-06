@@ -1,22 +1,21 @@
 package pw.seppuku.feature;
 
+import java.util.List;
+import java.util.UUID;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 
-import java.util.List;
-import java.util.UUID;
-
 public interface Feature {
 
-    UUID uniqueIdentifier();
+  UUID uniqueIdentifier();
 
-    String humanIdentifier();
+  String humanIdentifier();
 
-    Version version();
+  Version version();
 
-    List<Author> authors();
+  List<Author> authors();
 
-    void load();
+  void load();
 
-    void unload();
+  void unload();
 }
