@@ -9,6 +9,6 @@ public record Author(String alias, Optional<String> firstName, Optional<String> 
         return alias +
                 firstName.map(s -> " " + s).orElse("") +
                 lastName.map(s -> " " + s).orElse("") +
-                email.map(s -> " <" + s + ">");
+                email.map(s -> " <" + s + ">").orElse("");
     }
 }

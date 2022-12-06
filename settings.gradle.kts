@@ -25,6 +25,7 @@ include(
     "seppuku-mixins-api",
     "seppuku-plugin-api",
 
+    "plugins:seppuku-chat-interface",
     "plugins:seppuku-heads-up",
     "plugins:seppuku-sprint",
 )

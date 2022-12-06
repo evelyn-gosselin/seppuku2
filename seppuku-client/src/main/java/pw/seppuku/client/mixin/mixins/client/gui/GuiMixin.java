@@ -16,7 +16,7 @@ import pw.seppuku.plugin.exception.exceptions.DuplicateUniqueIdentifierPluginExc
 public abstract class GuiMixin implements Actual<Gui> {
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void onRenderTail(final PoseStack poseStack, final float f, final CallbackInfo callback) throws DuplicateUniqueIdentifierFeatureException, DuplicateUniqueIdentifierPluginException {
+    private void onRenderTail(final PoseStack poseStack, final float f, final CallbackInfo callback) {
         Seppuku.instance().eventBus().publish(new GuiRenderEvent(actual(), poseStack));
     }
 }

@@ -9,6 +9,7 @@
   "client": [
     "client.MinecraftMixin",
     "client.gui.GuiMixin",
+    "client.gui.screens.ChatScreenMixin",
     "client.player.LocalPlayerMixin"
   ]
 }

@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class HeadsUpFeature extends PersistentFeature {
 
     private static final UUID HEADS_UP_UNIQUE_IDENTIFIER = UUID.fromString("e5c78375-9c81-478d-ab85-7bf66d06ce75");
-    private static final String HEADS_UP_HUMAN_IDENTIFIER = "heads_up";
+    private static final String HEADS_UP_HUMAN_IDENTIFIER = "heads-up";
     private static final Version HEADS_UP_VERSION = new Version(0, 1, 0, Optional.empty(), Optional.empty());
     private static final List<Author> HEADS_UP_AUTHORS = List.of(new Author("wine", Optional.of("Ossian"), Optional.of("Winter"), Optional.of("ossian@hey.com")));
 
