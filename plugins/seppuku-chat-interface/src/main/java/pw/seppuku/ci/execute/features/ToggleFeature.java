@@ -26,7 +26,7 @@ public final class ToggleFeature extends ExecutableFeature {
     }
 
     @Override
-    public void execute(final String... rest) {
+    public void execute(final String... rest) throws CouldNotBeFoundFeatureException {
         final var humanIdentifier = rest[0];
         final var toggleableFeature = featureRepository.findFeaturesByHumanIdentifier(humanIdentifier, ToggleableFeature.class).stream()
                 .findFirst()
