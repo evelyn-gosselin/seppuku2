@@ -1,5 +1,6 @@
 package pw.seppuku.sprint.toggleable.features;
 
+import net.minecraft.client.player.LocalPlayer;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.subscribe.EventSubscriber;
 import pw.seppuku.events.minecraft.client.player.LocalPlayerSendPositionEvent;
@@ -19,7 +20,7 @@ public final class SprintFeature extends ToggleableFeature {
     private static final List<Author> SPRINT_AUTHORS = List.of(new Author("wine", Optional.of("Ossian"), Optional.of("Winter"), Optional.of("ossian@hey.com")));
 
     private static final EventSubscriber<LocalPlayerSendPositionEvent> LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER = event -> {
-        event.localPlayer().setSprinting(true);
+        event.localPlayer().setSprinting(shouldSprint(event.localPlayer()));
         return false;
     };
 
@@ -38,5 +39,9 @@ public final class SprintFeature extends ToggleableFeature {
     @Override
     public void unload() {
         eventBus.unsubscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER);
+    }
+
+    private static boolean shouldSprint(final LocalPlayer localPlayer) {
+        return localPlayer.isOnGround() && !localPlayer.input.shiftKeyDown && localPlayer.input.hasForwardImpulse();
     }
 }
