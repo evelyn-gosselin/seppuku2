@@ -72,6 +72,11 @@ public final class SimpleFeatureRepository implements FeatureRepository {
     }
 
     @Override
+    public <T extends Feature> T findFeatureByClass(Class<T> featureClass) throws CouldNotBeFoundFeatureException {
+        return findFeaturesByClass(featureClass).stream().findFirst().orElseThrow(() -> new CouldNotBeFoundFeatureException(featureClass.getSimpleName()));
+    }
+
+    @Override
     public <T extends Feature> T findFeatureByUniqueIdentifier(final UUID uniqueIdentifier, final Class<T> featureClass) throws CouldNotBeFoundFeatureException {
         return findFeaturesByClassAndPredicate(featureClass, f -> f.uniqueIdentifier().equals(uniqueIdentifier)).stream()
                 .findFirst()
