@@ -1,10 +1,12 @@
 package pw.seppuku.feature.repository.repositories;
 
 import pw.seppuku.feature.Feature;
+import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public final class SimpleFeatureRepository implements FeatureRepository {
 
@@ -51,11 +53,24 @@ public final class SimpleFeatureRepository implements FeatureRepository {
     }
 
     @Override
-    public <T extends Feature> List<T> findFeaturesByClass(final Class<T> featureClass) {
+    public <T extends Feature> List<T> findFeaturesByClassAndPredicate(final Class<T> featureClass, final Predicate<T> predicate) {
         return stream()
                 .filter(featureClass::isInstance)
                 .map(featureClass::cast)
+                .filter(predicate)
                 .toList();
+    }
+
+    @Override
+    public <T extends Feature> List<T> findFeaturesByClass(final Class<T> featureClass) {
+        return findFeaturesByClassAndPredicate(featureClass, f -> true);
+    }
+
+    @Override
+    public <T extends Feature> T findFeatureByUniqueIdentifier(final UUID uniqueIdentifier, final Class<T> featureClass) throws CouldNotBeFoundFeatureException {
+        return findFeaturesByClassAndPredicate(featureClass, f -> f.uniqueIdentifier().equals(uniqueIdentifier)).stream()
+                .findFirst()
+                .orElseThrow(() -> new CouldNotBeFoundFeatureException(uniqueIdentifier.toString()));
     }
 
     @Override
