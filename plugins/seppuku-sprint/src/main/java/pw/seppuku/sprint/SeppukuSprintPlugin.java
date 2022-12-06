@@ -6,6 +6,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
+import pw.seppuku.plugin.repository.PluginRepository;
 import pw.seppuku.sprint.toggleable.features.SprintFeature;
 
 import java.util.List;
@@ -24,13 +25,13 @@ public final class SeppukuSprintPlugin extends AbstractPlugin {
     }
 
     @Override
-    public void load(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException {
+    public void load(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) throws FeatureException {
         final var sprint = new SprintFeature(eventBus);
         featureRepository.add(sprint);
     }
 
     @Override
-    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException {
+    public void unload(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) throws FeatureException {
         final var sprint = featureRepository.findFeatureByClass(SprintFeature.class);
         featureRepository.remove(sprint);
     }

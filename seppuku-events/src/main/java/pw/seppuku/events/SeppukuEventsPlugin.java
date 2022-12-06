@@ -5,6 +5,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
+import pw.seppuku.plugin.repository.PluginRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,10 +23,10 @@ public final class SeppukuEventsPlugin extends AbstractPlugin {
     }
 
     @Override
-    public void load(final EventBus eventBus, final FeatureRepository featureRepository) {
+    public void load(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) {
     }
 
     @Override
-    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) {
+    public void unload(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) {
     }
 }

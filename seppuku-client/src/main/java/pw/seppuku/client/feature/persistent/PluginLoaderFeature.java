@@ -53,7 +53,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
 
         for (final var plugin : pluginRepository) {
             try {
-                plugin.load(eventBus, featureRepository);
+                plugin.load(eventBus, featureRepository, pluginRepository);
             } catch (final FeatureException exception) {
                 exception.printStackTrace();
             }
@@ -64,7 +64,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
     public void unload() {
         for (final var plugin : pluginRepository) {
             try {
-                plugin.unload(eventBus, featureRepository);
+                plugin.unload(eventBus, featureRepository, pluginRepository);
             } catch (final FeatureException exception) {
                 exception.printStackTrace();
             }

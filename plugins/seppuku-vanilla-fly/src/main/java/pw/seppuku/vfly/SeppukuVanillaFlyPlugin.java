@@ -6,6 +6,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
+import pw.seppuku.plugin.repository.PluginRepository;
 import pw.seppuku.vfly.toggleable.features.VanillaFlyFeature;
 
 import java.util.List;
@@ -24,13 +25,13 @@ public final class SeppukuVanillaFlyPlugin extends AbstractPlugin {
     }
 
     @Override
-    public void load(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException {
+    public void load(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) throws FeatureException {
         final var vanillaFly = new VanillaFlyFeature(eventBus);
         featureRepository.add(vanillaFly);
     }
 
     @Override
-    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) throws FeatureException {
+    public void unload(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) throws FeatureException {
         final var vanillaFly = featureRepository.findFeatureByClass(VanillaFlyFeature.class);
         featureRepository.remove(vanillaFly);
     }

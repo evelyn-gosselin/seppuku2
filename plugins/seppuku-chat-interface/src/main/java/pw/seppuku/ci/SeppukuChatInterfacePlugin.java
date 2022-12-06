@@ -11,6 +11,7 @@ import pw.seppuku.ci.persistent.features.ChatInterfaceFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
+import pw.seppuku.plugin.repository.PluginRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +29,7 @@ public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
     }
 
     @Override
-    public void load(final EventBus eventBus, final FeatureRepository featureRepository) throws DuplicateUniqueIdentifierFeatureException {
+    public void load(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) throws DuplicateUniqueIdentifierFeatureException {
         final var chatInterface = new ChatInterfaceFeature(eventBus, featureRepository);
         featureRepository.add(chatInterface);
 
@@ -40,7 +41,7 @@ public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
     }
 
     @Override
-    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) throws CouldNotBeFoundFeatureException {
+    public void unload(final EventBus eventBus, final FeatureRepository featureRepository, final PluginRepository pluginRepository) throws CouldNotBeFoundFeatureException {
         final var chatInterface = featureRepository.findFeatureByClass(ChatInterfaceFeature.class);
         featureRepository.remove(chatInterface);
 
