@@ -45,7 +45,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
                 plugin.load(eventBus, featureRepository);
             } catch (final DuplicateUniqueIdentifierFeatureException exception) {
                 exception.printStackTrace();
-                // TODO: Crash?
+                throw new RuntimeException(exception);
             }
         }
     }
@@ -64,7 +64,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
             pluginRepository.add(seppukuEventsPlugin);
         } catch (final DuplicateUniqueIdentifierPluginException exception) {
             exception.printStackTrace();
-            // TODO: Crash?
+            throw new RuntimeException(exception);
         }
     }
 
@@ -75,7 +75,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
             pluginRepository.add(seppukuCorePlugin);
         } catch (final DuplicateUniqueIdentifierPluginException exception) {
             exception.printStackTrace();
-            // TODO: Crash?
+            throw new RuntimeException(exception);
         }
     }
 }

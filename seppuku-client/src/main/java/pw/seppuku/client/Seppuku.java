@@ -31,9 +31,9 @@ public final class Seppuku {
                 if (instance == null) {
                     try {
                         instance = new Seppuku();
-                    } catch (DuplicateUniqueIdentifierFeatureException | CouldNotBeFoundFeatureException exception) {
+                    } catch (final DuplicateUniqueIdentifierFeatureException | CouldNotBeFoundFeatureException exception) {
                         exception.printStackTrace();
-                        return null; // TODO: Crash?
+                        throw new RuntimeException(exception);
                     }
                 }
             }
