@@ -49,4 +49,9 @@ public final class SimplePluginRepository implements PluginRepository {
             remove(pluginToRemove);
         }
     }
+
+    @Override
+    public Iterator<Plugin> iterator() {
+        return plugins.iterator();
+    }
 }

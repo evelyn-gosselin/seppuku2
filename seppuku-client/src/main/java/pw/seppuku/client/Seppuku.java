@@ -1,9 +1,11 @@
 package pw.seppuku.client;
 
+import pw.seppuku.client.feature.persistent.PluginLoaderFeature;
 import pw.seppuku.core.SeppukuCorePlugin;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.bus.buses.SimpleEventBus;
 import pw.seppuku.events.SeppukuEventsPlugin;
+import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.repository.repositories.SimpleFeatureRepository;
@@ -18,21 +20,21 @@ public final class Seppuku {
     private final FeatureRepository featureRepository = new SimpleFeatureRepository();
     private final PluginRepository pluginRepository = new SimplePluginRepository();
 
-    private Seppuku() throws DuplicateUniqueIdentifierPluginException, DuplicateUniqueIdentifierFeatureException {
-        final var seppukuEventsPlugin = new SeppukuEventsPlugin();
-        seppukuEventsPlugin.load(eventBus, featureRepository);
-        pluginRepository.add(seppukuEventsPlugin);
-
-        final var seppukuCorePlugin = new SeppukuCorePlugin();
-        seppukuCorePlugin.load(eventBus, featureRepository);
-        pluginRepository.add(seppukuCorePlugin);
+    private Seppuku() throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException {
+        featureRepository.add(new PluginLoaderFeature(eventBus, featureRepository, pluginRepository));
+        featureRepository.findFeatureByClass(PluginLoaderFeature.class).load();
     }
 
-    public static Seppuku instance() throws DuplicateUniqueIdentifierPluginException, DuplicateUniqueIdentifierFeatureException {
+    public static Seppuku instance() {
         if (instance == null) {
             synchronized (Seppuku.class) {
                 if (instance == null) {
-                    instance = new Seppuku();
+                    try {
+                        instance = new Seppuku();
+                    } catch (DuplicateUniqueIdentifierFeatureException | CouldNotBeFoundFeatureException exception) {
+                        exception.printStackTrace();
+                        return null; // TODO: Crash?
+                    }
                 }
             }
         }
