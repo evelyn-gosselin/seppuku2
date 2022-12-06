@@ -1,6 +1,7 @@
 package pw.seppuku.ci;
 
 import pw.seppuku.ci.execute.features.HelpFeature;
+import pw.seppuku.ci.execute.features.ToggleFeature;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.feature.exception.FeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
@@ -31,6 +32,9 @@ public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
 
         final var helpFeature = new HelpFeature(featureRepository);
         featureRepository.add(helpFeature);
+
+        final var toggleFeature = new ToggleFeature(featureRepository);
+        featureRepository.add(toggleFeature);
     }
 
     @Override
@@ -40,5 +44,8 @@ public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
 
         final var helpFeature = featureRepository.findFeatureByClass(HelpFeature.class);
         featureRepository.remove(helpFeature);
+
+        final var toggleFeature = featureRepository.findFeatureByClass(ToggleFeature.class);
+        featureRepository.remove(toggleFeature);
     }
 }
