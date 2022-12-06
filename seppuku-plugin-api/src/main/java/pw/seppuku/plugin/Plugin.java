@@ -2,7 +2,6 @@ package pw.seppuku.plugin;
 
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.feature.exception.FeatureException;
-import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;

@@ -31,6 +31,10 @@ public final class SprintFeature extends ToggleableFeature {
         this.eventBus = eventBus;
     }
 
+    private static boolean shouldSprint(final LocalPlayer localPlayer) {
+        return localPlayer.isOnGround() && !localPlayer.input.shiftKeyDown && localPlayer.input.hasForwardImpulse();
+    }
+
     @Override
     public void load() {
         eventBus.subscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER);
@@ -39,9 +43,5 @@ public final class SprintFeature extends ToggleableFeature {
     @Override
     public void unload() {
         eventBus.unsubscribe(LocalPlayerSendPositionEvent.class, LOCAL_PLAYER_SEND_POSITION_EVENT_EVENT_SUBSCRIBER);
-    }
-
-    private static boolean shouldSprint(final LocalPlayer localPlayer) {
-        return localPlayer.isOnGround() && !localPlayer.input.shiftKeyDown && localPlayer.input.hasForwardImpulse();
     }
 }
