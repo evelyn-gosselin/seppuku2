@@ -1,6 +1,5 @@
 package pw.seppuku.hu.persistent.features;
 
-import net.minecraft.client.player.LocalPlayer;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.subscribe.EventSubscriber;
 import pw.seppuku.events.minecraft.client.gui.GuiRenderEvent;
