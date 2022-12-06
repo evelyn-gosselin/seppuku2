@@ -35,8 +35,8 @@ public final class SprintFeature extends ToggleableFeature {
   }
 
   private static boolean shouldSprint(final LocalPlayer localPlayer) {
-    return localPlayer.isOnGround() && !localPlayer.input.shiftKeyDown
-        && localPlayer.input.hasForwardImpulse();
+    return (localPlayer.getAbilities().flying || localPlayer.isOnGround())
+        && !localPlayer.input.shiftKeyDown && localPlayer.input.hasForwardImpulse();
   }
 
   @Override
