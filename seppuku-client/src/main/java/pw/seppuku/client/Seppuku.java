@@ -28,18 +28,6 @@ public final class Seppuku {
         pluginRepository.add(seppukuCorePlugin);
     }
 
-    public EventBus eventBus() {
-        return eventBus;
-    }
-
-    public FeatureRepository featureRepository() {
-        return featureRepository;
-    }
-
-    public PluginRepository pluginRepository() {
-        return pluginRepository;
-    }
-
     public static Seppuku instance() throws DuplicateUniqueIdentifierPluginException, DuplicateUniqueIdentifierFeatureException {
         if (instance == null) {
             synchronized (Seppuku.class) {
@@ -50,5 +38,17 @@ public final class Seppuku {
         }
 
         return instance;
+    }
+
+    public EventBus eventBus() {
+        return eventBus;
+    }
+
+    public FeatureRepository featureRepository() {
+        return featureRepository;
+    }
+
+    public PluginRepository pluginRepository() {
+        return pluginRepository;
     }
 }

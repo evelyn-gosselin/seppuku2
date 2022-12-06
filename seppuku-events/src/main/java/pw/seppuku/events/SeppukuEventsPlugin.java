@@ -1,7 +1,6 @@
 package pw.seppuku.events;
 
 import pw.seppuku.event.bus.EventBus;
-import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
@@ -23,8 +22,10 @@ public final class SeppukuEventsPlugin extends AbstractPlugin {
     }
 
     @Override
-    public void load(final EventBus eventBus, final FeatureRepository featureRepository) {}
+    public void load(final EventBus eventBus, final FeatureRepository featureRepository) {
+    }
 
     @Override
-    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) {}
+    public void unload(final EventBus eventBus, final FeatureRepository featureRepository) {
+    }
 }
