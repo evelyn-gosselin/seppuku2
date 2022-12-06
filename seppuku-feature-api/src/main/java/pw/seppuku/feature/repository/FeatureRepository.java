@@ -5,7 +5,7 @@ import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureE
 
 import java.util.Collection;
 
-public interface FeatureRepository {
+public interface FeatureRepository extends Iterable<Feature> {
 
     <T extends Feature> void add(final T featureToAdd) throws DuplicateUniqueIdentifierFeatureException;
 

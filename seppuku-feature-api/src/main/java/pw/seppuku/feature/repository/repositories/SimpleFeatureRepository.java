@@ -49,4 +49,9 @@ public final class SimpleFeatureRepository implements FeatureRepository {
             remove(featureToRemove);
         }
     }
+
+    @Override
+    public Iterator<Feature> iterator() {
+        return features.iterator();
+    }
 }
