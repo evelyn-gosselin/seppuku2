@@ -8,6 +8,7 @@
   "package": "pw.seppuku.client.mixin.mixins",
   "client": [
     "client.MinecraftMixin",
+    "client.gui.GuiMixin",
     "client.player.LocalPlayerMixin"
   ]
 }
