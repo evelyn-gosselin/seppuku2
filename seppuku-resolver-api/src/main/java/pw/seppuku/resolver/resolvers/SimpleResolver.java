@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import pw.seppuku.resolver.Inject;
 import pw.seppuku.resolver.Resolver;
 
+// TODO: Clean this up... at some point...
 public final class SimpleResolver implements Resolver {
 
   private final Map<Class<?>, Object> dependencyClassToObjectMap;
@@ -46,8 +47,6 @@ public final class SimpleResolver implements Resolver {
   private <T> Constructor<T> findOptimalConstructor(final Class<T> type) {
     final var allConstructors = findAllConstructors(type);
     final var sortedConstructors = sortConstructorsByDependenciesMet(allConstructors);
-    System.out.println(sortedConstructors);
-
     return sortedConstructors.stream().findFirst().orElseThrow(RuntimeException::new);
   }
 
