@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import pw.seppuku.access.SeppukuAccessPlugin;
 import pw.seppuku.events.SeppukuEventsPlugin;
 import pw.seppuku.feature.persistent.PersistentFeature;
 import pw.seppuku.metadata.Author;
@@ -79,10 +80,26 @@ public final class PluginLoaderFeature extends PersistentFeature {
   }
 
   private void addBundledEventsPlugin() {
+    addBundledSeppukuEventsPlugin();
+    addBundledSeppukuAccessPlugin();
+  }
+
+  private void addBundledSeppukuEventsPlugin() {
     final var seppukuEventsPlugin = new SeppukuEventsPlugin();
 
     try {
       pluginRepository.add(seppukuEventsPlugin);
+    } catch (final DuplicateUniqueIdentifierPluginException exception) {
+      exception.printStackTrace();
+      throw new RuntimeException(exception);
+    }
+  }
+
+  private void addBundledSeppukuAccessPlugin() {
+    final var seppukuAccessPlugin = new SeppukuAccessPlugin();
+
+    try {
+      pluginRepository.add(seppukuAccessPlugin);
     } catch (final DuplicateUniqueIdentifierPluginException exception) {
       exception.printStackTrace();
       throw new RuntimeException(exception);
