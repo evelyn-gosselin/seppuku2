@@ -9,12 +9,12 @@ public final class BlockPosUtility {
   private BlockPosUtility() {
   }
 
-  public static Stream<BlockPos> getBlockPositionStreamWithinRadius(final BlockPos center,
+  public static Stream<BlockPos> getBlockPosStreamWithinRadius(final BlockPos center,
       final float radius) {
-    return getBlockPositionStreamWithinRadiusMatchingPredicate(center, radius, blockPos -> true);
+    return getBlockPosStreamWithinRadiusMatchingPredicate(center, radius, blockPos -> true);
   }
 
-  public static Stream<BlockPos> getBlockPositionStreamWithinRadiusMatchingPredicate(
+  public static Stream<BlockPos> getBlockPosStreamWithinRadiusMatchingPredicate(
       final BlockPos center, final float radius, final Predicate<BlockPos> predicate) {
     final var from = center.offset(-radius, -radius, -radius);
     final var to = center.offset(radius, radius, radius);

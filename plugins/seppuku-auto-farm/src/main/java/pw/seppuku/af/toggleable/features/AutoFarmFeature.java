@@ -49,7 +49,7 @@ public final class AutoFarmFeature extends ToggleableFeature {
     final var level = localPlayer.level;
 
     // TODO: Sort by distance to player
-    BlockPosUtility.getBlockPositionStreamWithinRadiusMatchingPredicate(localPlayerPos,
+    BlockPosUtility.getBlockPosStreamWithinRadiusMatchingPredicate(localPlayerPos,
         AUTO_FARM_RADIUS, canPlantOnBlockPosPredicate(level)).findFirst().ifPresent(blockPos -> {
       final var blockPosVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
       final var blockHitResult = new BlockHitResult(blockPosVec, Direction.UP, blockPos, false);
