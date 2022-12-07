@@ -15,5 +15,6 @@ pluginManagement {
 }
 
 include(
-    "seppuku-sdk:feature-system"
+    "seppuku-sdk:dependency-injection",
+    "seppuku-sdk:feature-system",
 )
