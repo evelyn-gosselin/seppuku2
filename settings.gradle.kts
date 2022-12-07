@@ -14,4 +14,6 @@ pluginManagement {
     }
 }
 
-include()
+include(
+    "seppuku-sdk:feature-system"
+)
