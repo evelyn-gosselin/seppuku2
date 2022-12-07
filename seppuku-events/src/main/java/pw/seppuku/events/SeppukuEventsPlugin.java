@@ -3,12 +3,9 @@ package pw.seppuku.events;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import pw.seppuku.event.bus.EventBus;
-import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.plugin.AbstractPlugin;
-import pw.seppuku.plugin.repository.PluginRepository;
 
 public final class SeppukuEventsPlugin extends AbstractPlugin {
 
