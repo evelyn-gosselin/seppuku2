@@ -10,6 +10,7 @@
     "client.MinecraftMixin",
     "client.gui.GuiMixin",
     "client.gui.screens.ChatScreenMixin",
+    "client.multiplayer.MultiPlayerGameModeMixin",
     "client.player.LocalPlayerMixin"
   ]
 }
