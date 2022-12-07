@@ -1,9 +1,13 @@
 package pw.seppuku.af.toggleable.features;
 
+import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -53,10 +57,10 @@ public final class AutoFarmFeature extends ToggleableFeature {
 
     final var level = localPlayer.level;
 
-    final var blockPosIterable = getBlockPosIterableWithinRadius(localPlayer.blockPosition());
-    // TODO: How the hell do I sort this thing...
+    final var blockPosList = getBlockPosListWithinRadius(localPlayer.blockPosition());
+    blockPosList.sort(comparingByDistanceToLocalPlayer(localPlayer));
 
-    for (final var blockPos : blockPosIterable) {
+    for (final var blockPos : blockPosList) {
       final var blockState = level.getBlockState(blockPos);
       final var block = blockState.getBlock();
       if (!isBlockPosFarmBlock(block)) {
@@ -79,11 +83,28 @@ public final class AutoFarmFeature extends ToggleableFeature {
     return false;
   }
 
+  private List<BlockPos> getBlockPosListWithinRadius(final BlockPos center) {
+    final var blockPosIterable = getBlockPosIterableWithinRadius(center);
+
+    final var blockPosList = new ArrayList<BlockPos>();
+    for (final var blockPos : blockPosIterable) {
+      // Need to call BlockPos#mutable or the list will contain AUTO_FARM_RADIUS³ of the same BlockPos
+      blockPosList.add(blockPos.mutable());
+    }
+
+    return blockPosList;
+  }
+
   private Iterable<BlockPos> getBlockPosIterableWithinRadius(final BlockPos center) {
     final var from = center.offset(-AUTO_FARM_RADIUS, -AUTO_FARM_RADIUS, -AUTO_FARM_RADIUS);
     final var to = center.offset(AUTO_FARM_RADIUS, AUTO_FARM_RADIUS, AUTO_FARM_RADIUS);
 
     return BlockPos.betweenClosed(from, to);
+  }
+
+  private Comparator<BlockPos> comparingByDistanceToLocalPlayer(final LocalPlayer localPlayer) {
+    return Comparator.comparingDouble(
+        blockPos -> localPlayer.distanceToSqr(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
   }
 
   private boolean isBlockPosFarmBlock(final Block block) {
