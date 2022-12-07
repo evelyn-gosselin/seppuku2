@@ -10,5 +10,5 @@ abstract class AbstractFeature : Feature {
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> findComponent(componentType: KClass<T>): T? = components[componentType] as? T
+    final override fun <T : Any> findComponent(componentType: KClass<T>): T? = components[componentType] as? T
 }
