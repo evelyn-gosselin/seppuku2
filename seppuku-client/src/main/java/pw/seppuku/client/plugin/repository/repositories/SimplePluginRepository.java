@@ -1,4 +1,4 @@
-package pw.seppuku.plugin.repository.repositories;
+package pw.seppuku.client.plugin.repository.repositories;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package pw.seppuku.resolver.resolvers;
+package pw.seppuku.client.resolver.resolvers;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

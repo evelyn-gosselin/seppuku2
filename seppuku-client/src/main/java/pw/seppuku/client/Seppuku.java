@@ -9,11 +9,11 @@ import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.persistent.PersistentFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
-import pw.seppuku.feature.repository.repositories.SimpleFeatureRepository;
+import pw.seppuku.client.feature.repository.repositories.SimpleFeatureRepository;
 import pw.seppuku.plugin.repository.PluginRepository;
-import pw.seppuku.plugin.repository.repositories.SimplePluginRepository;
+import pw.seppuku.client.plugin.repository.repositories.SimplePluginRepository;
 import pw.seppuku.resolver.Resolver;
-import pw.seppuku.resolver.resolvers.SimpleResolver;
+import pw.seppuku.client.resolver.resolvers.SimpleResolver;
 
 public final class Seppuku {
 
