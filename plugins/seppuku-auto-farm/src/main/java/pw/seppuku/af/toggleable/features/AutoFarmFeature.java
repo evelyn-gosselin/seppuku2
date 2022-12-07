@@ -1,12 +1,9 @@
 package pw.seppuku.af.toggleable.features;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -48,16 +45,18 @@ public final class AutoFarmFeature extends ToggleableFeature {
 
   private boolean onLocalPlayerSendPosition(final LocalPlayerSendPositionEvent event) {
     final var minecraft = Minecraft.getInstance();
+
     final var multiPlayerGameMode = minecraft.gameMode;
     assert multiPlayerGameMode != null;
 
     final var localPlayer = event.localPlayer();
+
     final var level = localPlayer.level;
 
-    final var blockPosList = getBlockPosListWithinRadius(localPlayer.blockPosition());
-    blockPosList.sort(comparingByDistanceToLocalPlayer(localPlayer));
+    final var blockPosIterable = getBlockPosIterableWithinRadius(localPlayer.blockPosition());
+    // TODO: How the hell do I sort this thing...
 
-    for (final var blockPos : blockPosList) {
+    for (final var blockPos : blockPosIterable) {
       final var blockState = level.getBlockState(blockPos);
       final var block = blockState.getBlock();
       if (!isBlockPosFarmBlock(block)) {
@@ -80,26 +79,11 @@ public final class AutoFarmFeature extends ToggleableFeature {
     return false;
   }
 
-  private List<BlockPos> getBlockPosListWithinRadius(final BlockPos center) {
+  private Iterable<BlockPos> getBlockPosIterableWithinRadius(final BlockPos center) {
     final var from = center.offset(-AUTO_FARM_RADIUS, -AUTO_FARM_RADIUS, -AUTO_FARM_RADIUS);
     final var to = center.offset(AUTO_FARM_RADIUS, AUTO_FARM_RADIUS, AUTO_FARM_RADIUS);
 
-    final var min = new BlockPos(Math.min(from.getX(), to.getX()), Math.min(from.getY(), to.getY()),
-        Math.min(from.getZ(), to.getZ()));
-
-    final var max = new BlockPos(Math.max(from.getX(), to.getX()), Math.max(from.getY(), to.getY()),
-        Math.max(from.getZ(), to.getZ()));
-
-    final var blockPosList = new ArrayList<BlockPos>();
-    for (var x = min.getX(); x < max.getX(); ++x) {
-      for (var y = min.getY(); y < max.getY(); ++y) {
-        for (var z = min.getZ(); z < max.getZ(); ++z) {
-          blockPosList.add(new BlockPos(x, y, z));
-        }
-      }
-    }
-
-    return blockPosList;
+    return BlockPos.betweenClosed(from, to);
   }
 
   private boolean isBlockPosFarmBlock(final Block block) {
@@ -108,11 +92,6 @@ public final class AutoFarmFeature extends ToggleableFeature {
 
   private boolean isBlockPosAirBlock(final Block block) {
     return block instanceof AirBlock;
-  }
-
-  private Comparator<BlockPos> comparingByDistanceToLocalPlayer(final LocalPlayer localPlayer) {
-    return Comparator.comparingDouble(
-        blockPos -> localPlayer.distanceToSqr(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
   }
 
   @Override
