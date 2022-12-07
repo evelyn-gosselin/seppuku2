@@ -3,30 +3,39 @@ package pw.seppuku.client;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import pw.seppuku.client.feature.persistent.PluginLoaderFeature;
+import pw.seppuku.client.feature.repository.repositories.SimpleFeatureRepository;
+import pw.seppuku.client.plugin.repository.repositories.SimplePluginRepository;
+import pw.seppuku.client.resolver.resolvers.SimpleResolver;
+import pw.seppuku.client.transform.bundle.bundle.SimpleTransformerBundle;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.bus.buses.SimpleEventBus;
 import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.exception.exceptions.DuplicateUniqueIdentifierFeatureException;
 import pw.seppuku.feature.persistent.PersistentFeature;
 import pw.seppuku.feature.repository.FeatureRepository;
-import pw.seppuku.client.feature.repository.repositories.SimpleFeatureRepository;
 import pw.seppuku.plugin.repository.PluginRepository;
-import pw.seppuku.client.plugin.repository.repositories.SimplePluginRepository;
 import pw.seppuku.resolver.Resolver;
-import pw.seppuku.client.resolver.resolvers.SimpleResolver;
+import pw.seppuku.transform.Transformer;
+import pw.seppuku.transform.bundle.TransformerBundle;
 
 public final class Seppuku {
 
   private static volatile Seppuku instance = null;
 
+  // @formatter:off
   private final Resolver resolver = new SimpleResolver(Map.of(
       EventBus.class, new SimpleEventBus(),
       FeatureRepository.class, new SimpleFeatureRepository(),
-      PluginRepository.class, new SimplePluginRepository()
+      PluginRepository.class, new SimplePluginRepository(),
+      TransformerBundle.class, new SimpleTransformerBundle()
   ));
+  // @formatter:on
 
   private Seppuku()
       throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    final var transformerBundle = resolver.resolveDependency(TransformerBundle.class);
+    transformerBundle.addAll(Transformer.builtinTransformers());
+
     final var featureRepository = resolver.resolveDependency(FeatureRepository.class);
 
     final var pluginLoaderFeature = resolver.create(PluginLoaderFeature.class);

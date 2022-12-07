@@ -15,14 +15,14 @@ import pw.seppuku.resolver.Resolver;
 // TODO: Clean this up... at some point...
 public final class SimpleResolver implements Resolver {
 
-  private final Map<Class<?>, Object> dependencyClassToObjectMap;
+  private final Map<Class<?>, Object> dependencyTypeToObjectMap;
 
   public SimpleResolver() {
     this(new HashMap<>());
   }
 
-  public SimpleResolver(final Map<Class<?>, Object> dependencyClassToObjectMap) {
-    this.dependencyClassToObjectMap = dependencyClassToObjectMap;
+  public SimpleResolver(final Map<Class<?>, Object> dependencyTypeToObjectMap) {
+    this.dependencyTypeToObjectMap = dependencyTypeToObjectMap;
   }
 
   @Override
@@ -33,7 +33,7 @@ public final class SimpleResolver implements Resolver {
     }
 
     //noinspection unchecked
-    return (T) dependencyClassToObjectMap.get(dependencyType);
+    return (T) dependencyTypeToObjectMap.get(dependencyType);
   }
 
   @Override
@@ -70,7 +70,7 @@ public final class SimpleResolver implements Resolver {
 
   private <T> int calculateDependenciesMet(final Constructor<T> constructor) {
     return Arrays.stream(constructor.getParameterTypes())
-        .filter(dependencyClassToObjectMap::containsKey).toList().size();
+        .filter(dependencyTypeToObjectMap::containsKey).toList().size();
   }
 
   private <T> Object[] resolveDependencies(final Constructor<T> constructor) {

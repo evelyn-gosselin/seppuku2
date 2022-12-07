@@ -26,6 +26,7 @@ include(
     "seppuku-mixins-api",
     "seppuku-plugin-api",
     "seppuku-resolver-api",
+    "seppuku-transform-api",
 
     "plugins:seppuku-auto-tool",
     "plugins:seppuku-chat-interface",

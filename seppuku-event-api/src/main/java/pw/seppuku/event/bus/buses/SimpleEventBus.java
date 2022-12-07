@@ -9,24 +9,24 @@ import pw.seppuku.event.subscribe.EventSubscriber;
 
 public final class SimpleEventBus implements EventBus {
 
-  private final Map<Class<?>, EventPublisher<?>> eventClassToPublisherMap;
+  private final Map<Class<?>, EventPublisher<?>> eventTypeToPublisherMap;
 
   public SimpleEventBus() {
     this(new HashMap<>());
   }
 
-  public SimpleEventBus(final Map<Class<?>, EventPublisher<?>> eventClassToPublisherMap) {
-    this.eventClassToPublisherMap = eventClassToPublisherMap;
+  public SimpleEventBus(final Map<Class<?>, EventPublisher<?>> eventTypeToPublisherMap) {
+    this.eventTypeToPublisherMap = eventTypeToPublisherMap;
   }
 
   @Override
-  public <T> void subscribe(final Class<T> eventClass, final EventSubscriber<T> subscriber) {
-    findOrCreateEventPublisher(eventClass).subscribe(subscriber);
+  public <T> void subscribe(final Class<T> eventType, final EventSubscriber<T> subscriber) {
+    findOrCreateEventPublisher(eventType).subscribe(subscriber);
   }
 
   @Override
-  public <T> void unsubscribe(final Class<T> eventClass, final EventSubscriber<T> subscriber) {
-    findOrCreateEventPublisher(eventClass).unsubscribe(subscriber);
+  public <T> void unsubscribe(final Class<T> eventType, final EventSubscriber<T> subscriber) {
+    findOrCreateEventPublisher(eventType).unsubscribe(subscriber);
   }
 
   @Override
@@ -36,10 +36,10 @@ public final class SimpleEventBus implements EventBus {
     return findOrCreateEventPublisher(eventClass).publish(eventToPublish);
   }
 
-  private <T> EventPublisher<T> findOrCreateEventPublisher(final Class<T> eventClass) {
-    eventClassToPublisherMap.putIfAbsent(eventClass, new SimpleEventPublisher<>());
+  private <T> EventPublisher<T> findOrCreateEventPublisher(final Class<T> eventType) {
+    eventTypeToPublisherMap.putIfAbsent(eventType, new SimpleEventPublisher<>());
 
     //noinspection unchecked
-    return (EventPublisher<T>) eventClassToPublisherMap.get(eventClass);
+    return (EventPublisher<T>) eventTypeToPublisherMap.get(eventType);
   }
 }

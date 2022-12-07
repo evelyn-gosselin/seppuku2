@@ -15,6 +15,7 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.resolver.Inject;
+import pw.seppuku.transform.bundle.TransformerBundle;
 
 public final class ChatInterfaceFeature extends PersistentFeature {
 
@@ -34,7 +35,8 @@ public final class ChatInterfaceFeature extends PersistentFeature {
   private final EventSubscriber<ChatScreenHandleInputEvent> chatScreenHandleInputEventSubscriber;
 
   @Inject
-  public ChatInterfaceFeature(final EventBus eventBus, final FeatureRepository featureRepository) {
+  public ChatInterfaceFeature(final EventBus eventBus, final FeatureRepository featureRepository,
+      final TransformerBundle transformerBundle) {
     super(CHAT_INTERFACE_UNIQUE_IDENTIFIER, CHAT_INTERFACE_HUMAN_IDENTIFIER, CHAT_INTERFACE_VERSION,
         CHAT_INTERFACE_AUTHORS);
     this.eventBus = eventBus;

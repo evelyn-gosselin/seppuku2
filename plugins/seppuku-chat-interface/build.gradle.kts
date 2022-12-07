@@ -17,4 +17,5 @@ dependencies {
     implementation(project(":seppuku-feature-api"))
     implementation(project(":seppuku-plugin-api"))
     implementation(project(":seppuku-resolver-api"))
+    implementation(project(":seppuku-transform-api"))
 }

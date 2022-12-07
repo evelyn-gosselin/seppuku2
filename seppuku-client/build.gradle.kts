@@ -19,6 +19,7 @@ dependencies {
     implementation(project(":seppuku-mixins-api"))
     implementation(project(":seppuku-plugin-api"))
     implementation(project(":seppuku-resolver-api"))
+    implementation(project(":seppuku-transform-api"))
 }
 
 tasks {

@@ -6,7 +6,7 @@ public abstract class MultiPlayerGameModeEvent {
 
   private final MultiPlayerGameMode multiPlayerGameMode;
 
-  public MultiPlayerGameModeEvent(final MultiPlayerGameMode multiPlayerGameMode) {
+  protected MultiPlayerGameModeEvent(final MultiPlayerGameMode multiPlayerGameMode) {
     this.multiPlayerGameMode = multiPlayerGameMode;
   }
 
