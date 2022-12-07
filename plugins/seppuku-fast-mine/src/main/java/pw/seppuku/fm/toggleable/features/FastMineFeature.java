@@ -23,14 +23,8 @@ public final class FastMineFeature extends ToggleableFeature {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  private static final EventSubscriber<MultiPlayerGameModeContinueDestroyBlockEvent> MULTI_PLAYER_GAME_MODE_CONTINUE_DESTROY_BLOCK_EVENT_SUBSCRIBER = event -> {
-    final var multiPlayerGameMode = (IMultiPlayerGameMode) event.multiPlayerGameMode();
-    final var destroyProgress = multiPlayerGameMode.getDestroyProgress();
-    multiPlayerGameMode.setDestroyProgress(destroyProgress + 0.1f);
-    return false;
-  };
-
   private final EventBus eventBus;
+  private final EventSubscriber<MultiPlayerGameModeContinueDestroyBlockEvent> multiPlayerGameModeContinueDestroyBlockEventSubscriber = this::onMultiPlayerGameModeContinueDestroyBlock;
 
   @Inject
   public FastMineFeature(final EventBus eventBus) {
@@ -39,15 +33,23 @@ public final class FastMineFeature extends ToggleableFeature {
     this.eventBus = eventBus;
   }
 
+  private boolean onMultiPlayerGameModeContinueDestroyBlock(
+      final MultiPlayerGameModeContinueDestroyBlockEvent event) {
+    final var multiPlayerGameMode = (IMultiPlayerGameMode) event.multiPlayerGameMode();
+    final var destroyProgress = multiPlayerGameMode.getDestroyProgress();
+    multiPlayerGameMode.setDestroyProgress(destroyProgress + 0.1f);
+    return false;
+  }
+
   @Override
   public void load() {
     eventBus.subscribe(MultiPlayerGameModeContinueDestroyBlockEvent.class,
-        MULTI_PLAYER_GAME_MODE_CONTINUE_DESTROY_BLOCK_EVENT_SUBSCRIBER);
+        multiPlayerGameModeContinueDestroyBlockEventSubscriber);
   }
 
   @Override
   public void unload() {
     eventBus.unsubscribe(MultiPlayerGameModeContinueDestroyBlockEvent.class,
-        MULTI_PLAYER_GAME_MODE_CONTINUE_DESTROY_BLOCK_EVENT_SUBSCRIBER);
+        multiPlayerGameModeContinueDestroyBlockEventSubscriber);
   }
 }

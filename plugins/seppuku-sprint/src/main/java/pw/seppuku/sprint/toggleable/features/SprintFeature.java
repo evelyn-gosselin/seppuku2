@@ -23,12 +23,8 @@ public final class SprintFeature extends ToggleableFeature {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  private static final EventSubscriber<LocalPlayerSendPositionEvent> LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER = event -> {
-    event.localPlayer().setSprinting(shouldSprint(event.localPlayer()));
-    return false;
-  };
-
   private final EventBus eventBus;
+  private final EventSubscriber<LocalPlayerSendPositionEvent> localPlayerSendPositionEventSubscriber = this::onLocalPlayerSendPosition;
 
   @Inject
   public SprintFeature(final EventBus eventBus) {
@@ -36,19 +32,23 @@ public final class SprintFeature extends ToggleableFeature {
     this.eventBus = eventBus;
   }
 
-  private static boolean shouldSprint(final LocalPlayer localPlayer) {
+  private boolean onLocalPlayerSendPosition(final LocalPlayerSendPositionEvent event) {
+    event.localPlayer().setSprinting(shouldSprint(event.localPlayer()));
+    return false;
+  }
+
+  private boolean shouldSprint(final LocalPlayer localPlayer) {
     return !localPlayer.input.shiftKeyDown && localPlayer.input.hasForwardImpulse();
   }
 
   @Override
   public void load() {
-    eventBus.subscribe(LocalPlayerSendPositionEvent.class,
-        LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER);
+    eventBus.subscribe(LocalPlayerSendPositionEvent.class, localPlayerSendPositionEventSubscriber);
   }
 
   @Override
   public void unload() {
     eventBus.unsubscribe(LocalPlayerSendPositionEvent.class,
-        LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER);
+        localPlayerSendPositionEventSubscriber);
   }
 }

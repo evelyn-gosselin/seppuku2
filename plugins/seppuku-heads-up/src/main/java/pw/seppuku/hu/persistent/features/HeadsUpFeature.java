@@ -26,28 +26,29 @@ public final class HeadsUpFeature extends PersistentFeature {
           Optional.of("ossian@hey.com")));
 
   private final EventBus eventBus;
-
-  private final EventSubscriber<GuiRenderEvent> guiRenderEventSubscriber;
+  private final FeatureRepository featureRepository;
+  private final EventSubscriber<GuiRenderEvent> guiRenderEventSubscriber = this::onGuiRender;
 
   @Inject
   public HeadsUpFeature(final EventBus eventBus, final FeatureRepository featureRepository) {
     super(HEADS_UP_UNIQUE_IDENTIFIER, HEADS_UP_HUMAN_IDENTIFIER, HEADS_UP_VERSION,
         HEADS_UP_AUTHORS);
     this.eventBus = eventBus;
+    this.featureRepository = featureRepository;
+  }
 
-    this.guiRenderEventSubscriber = event -> {
-      final var y = new AtomicInteger(2);
-      featureRepository.stream().filter(ToggleableFeature.class::isInstance)
-          .map(ToggleableFeature.class::cast).filter(ToggleableFeature::isRunning)
-          .forEach(toggleableFeature -> {
-            event.gui().getFont()
-                .drawShadow(event.poseStack(), toggleableFeature.humanIdentifier(), 2, y.get(),
-                    0xffffff);
-            y.addAndGet(2 + event.gui().getFont().lineHeight);
-          });
+  private boolean onGuiRender(final GuiRenderEvent event) {
+    final var y = new AtomicInteger(2);
+    featureRepository.stream().filter(ToggleableFeature.class::isInstance)
+        .map(ToggleableFeature.class::cast).filter(ToggleableFeature::isRunning)
+        .forEach(toggleableFeature -> {
+          event.gui().getFont()
+              .drawShadow(event.poseStack(), toggleableFeature.humanIdentifier(), 2, y.get(),
+                  0xffffff);
+          y.addAndGet(2 + event.gui().getFont().lineHeight);
+        });
 
-      return false;
-    };
+    return false;
   }
 
   @Override

@@ -28,32 +28,34 @@ public final class ChatInterfaceFeature extends PersistentFeature {
   private static final String CHAT_INTERFACE_PREFIX = ".";
 
   private final EventBus eventBus;
-
-  private final EventSubscriber<ChatScreenHandleInputEvent> chatScreenHandleInputEventSubscriber;
+  private final TransformerBundle transformerBundle;
+  private final EventSubscriber<ChatScreenHandleInputEvent> chatScreenHandleInputEventSubscriber = this::onChatScreenHandleInputEvent;
 
   @Inject
   public ChatInterfaceFeature(final EventBus eventBus, final TransformerBundle transformerBundle) {
     super(CHAT_INTERFACE_UNIQUE_IDENTIFIER, CHAT_INTERFACE_HUMAN_IDENTIFIER, CHAT_INTERFACE_VERSION,
         CHAT_INTERFACE_AUTHORS);
     this.eventBus = eventBus;
+    this.transformerBundle = transformerBundle;
+  }
 
-    this.chatScreenHandleInputEventSubscriber = event -> {
-      if (!event.message().startsWith(CHAT_INTERFACE_PREFIX)) {
-        return false;
-      }
+  private boolean onChatScreenHandleInputEvent(final ChatScreenHandleInputEvent event)
+      throws Exception {
+    if (!event.message().startsWith(CHAT_INTERFACE_PREFIX)) {
+      return false;
+    }
 
-      final var command = stripPrefixFromMessage(event.message());
-      final var commandParts = splitCommandToCommandParts(command);
-      final var commandArguments = splitCommandPartsToCommandArguments(commandParts);
+    final var command = stripPrefixFromMessage(event.message());
+    final var commandParts = splitCommandToCommandParts(command);
+    final var commandArguments = splitCommandPartsToCommandArguments(commandParts);
 
-      final var executableFeatureHumanIdentifier = commandParts.get(0);
-      final var executableFeature = transformerBundle.transform(String.class,
-          ExecutableFeature.class, executableFeatureHumanIdentifier);
+    final var executableFeatureHumanIdentifier = commandParts.get(0);
+    final var executableFeature = transformerBundle.transform(String.class, ExecutableFeature.class,
+        executableFeatureHumanIdentifier);
 
-      executableFeature.execute(commandArguments.toArray(String[]::new));
+    executableFeature.execute(commandArguments.toArray(String[]::new));
 
-      return true;
-    };
+    return true;
   }
 
   private String stripPrefixFromMessage(final String message) {

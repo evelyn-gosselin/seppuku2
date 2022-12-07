@@ -29,28 +29,8 @@ public final class AutoToolFeature extends ToggleableFeature {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  private static final EventSubscriber<MultiPlayerGameModeStartDestroyBlockEvent> MULTI_PLAYER_GAME_MODE_START_DESTROY_BLOCK_EVENT_SUBSCRIBER = event -> {
-    final var minecraft = Minecraft.getInstance();
-
-    final var localPlayer = minecraft.player;
-    if (localPlayer == null) {
-      return false;
-    }
-
-    final var level = minecraft.level;
-    if (level == null) {
-      return false;
-    }
-
-    final var blockState = level.getBlockState(event.blockPos());
-
-    getBestRatedSlotAgainstBlockState(blockState, localPlayer).ifPresent(
-        slot -> localPlayer.getInventory().selected = slot);
-
-    return false;
-  };
-
   private final EventBus eventBus;
+  private final EventSubscriber<MultiPlayerGameModeStartDestroyBlockEvent> multiPlayerGameModeStartDestroyBlockEventSubscriber = this::onMultiPlayerGameModeStartDestroyBlock;
 
   @Inject
   public AutoToolFeature(final EventBus eventBus) {
@@ -59,13 +39,31 @@ public final class AutoToolFeature extends ToggleableFeature {
     this.eventBus = eventBus;
   }
 
-  private static Optional<Integer> getBestRatedSlotAgainstBlockState(final BlockState blockState,
-      final LocalPlayer localPlayer) {
-    return buildSlotToRatingMap(blockState, localPlayer).entrySet().stream()
-        .max(AutoToolFeature::compareSlotToRatingEntries).map(Entry::getKey);
+  private boolean onMultiPlayerGameModeStartDestroyBlock(
+      final MultiPlayerGameModeStartDestroyBlockEvent event) {
+    final var minecraft = Minecraft.getInstance();
+
+    final var localPlayer = minecraft.player;
+    assert localPlayer != null;
+
+    final var level = minecraft.level;
+    assert level != null;
+
+    final var blockState = level.getBlockState(event.blockPos());
+
+    getBestRatedSlotAgainstBlockState(blockState, localPlayer).ifPresent(
+        slot -> localPlayer.getInventory().selected = slot);
+
+    return false;
   }
 
-  private static Map<Integer, Float> buildSlotToRatingMap(final BlockState blockState,
+  private Optional<Integer> getBestRatedSlotAgainstBlockState(final BlockState blockState,
+      final LocalPlayer localPlayer) {
+    return buildSlotToRatingMap(blockState, localPlayer).entrySet().stream()
+        .max(this::compareSlotToRatingEntries).map(Entry::getKey);
+  }
+
+  private Map<Integer, Float> buildSlotToRatingMap(final BlockState blockState,
       final LocalPlayer localPlayer) {
     final var slotToRatingMap = new HashMap<Integer, Float>();
 
@@ -80,14 +78,14 @@ public final class AutoToolFeature extends ToggleableFeature {
     return slotToRatingMap;
   }
 
-  private static float calculateItemStackRatingAgainstBlockState(final ItemStack itemStack,
+  private float calculateItemStackRatingAgainstBlockState(final ItemStack itemStack,
       final BlockState blockState) {
     // TODO: take enchantments into account
 
     return itemStack.getDestroySpeed(blockState);
   }
 
-  private static int compareSlotToRatingEntries(final Entry<Integer, Float> lhs,
+  private int compareSlotToRatingEntries(final Entry<Integer, Float> lhs,
       final Entry<Integer, Float> rhs) {
     return Float.compare(lhs.getValue(), rhs.getValue());
   }
@@ -95,12 +93,12 @@ public final class AutoToolFeature extends ToggleableFeature {
   @Override
   public void load() {
     eventBus.subscribe(MultiPlayerGameModeStartDestroyBlockEvent.class,
-        MULTI_PLAYER_GAME_MODE_START_DESTROY_BLOCK_EVENT_SUBSCRIBER);
+        multiPlayerGameModeStartDestroyBlockEventSubscriber);
   }
 
   @Override
   public void unload() {
     eventBus.unsubscribe(MultiPlayerGameModeStartDestroyBlockEvent.class,
-        MULTI_PLAYER_GAME_MODE_START_DESTROY_BLOCK_EVENT_SUBSCRIBER);
+        multiPlayerGameModeStartDestroyBlockEventSubscriber);
   }
 }

@@ -22,12 +22,8 @@ public final class VanillaFlyFeature extends ToggleableFeature {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  private static final EventSubscriber<LocalPlayerSendPositionEvent> LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER = event -> {
-    event.localPlayer().getAbilities().mayfly = true;
-    return false;
-  };
-
   private final EventBus eventBus;
+  private final EventSubscriber<LocalPlayerSendPositionEvent> localPlayerSendPositionEventSubscriber = this::onLocalPlayerSendPosition;
 
   @Inject
   public VanillaFlyFeature(final EventBus eventBus) {
@@ -35,15 +31,19 @@ public final class VanillaFlyFeature extends ToggleableFeature {
     this.eventBus = eventBus;
   }
 
+  private boolean onLocalPlayerSendPosition(final LocalPlayerSendPositionEvent event) {
+    event.localPlayer().getAbilities().mayfly = true;
+    return false;
+  }
+
   @Override
   public void load() {
-    eventBus.subscribe(LocalPlayerSendPositionEvent.class,
-        LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER);
+    eventBus.subscribe(LocalPlayerSendPositionEvent.class, localPlayerSendPositionEventSubscriber);
   }
 
   @Override
   public void unload() {
     eventBus.unsubscribe(LocalPlayerSendPositionEvent.class,
-        LOCAL_PLAYER_SEND_POSITION_EVENT_SUBSCRIBER);
+        localPlayerSendPositionEventSubscriber);
   }
 }

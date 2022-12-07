@@ -36,34 +36,33 @@ public final class AutoFarmFeature extends ToggleableFeature {
   private static final float AUTO_FARM_RADIUS = 3;
 
   private final EventBus eventBus;
-
-  private final EventSubscriber<LocalPlayerSendPositionEvent> localPlayerSendPositionEventSubscriber = event -> {
-    final var minecraft = Minecraft.getInstance();
-    final var multiPlayerGameMode = minecraft.gameMode;
-    if (multiPlayerGameMode == null) {
-      return false;
-    }
-
-    final var localPlayer = event.localPlayer();
-    final var localPlayerPos = localPlayer.blockPosition();
-    final var level = localPlayer.level;
-
-    // TODO: Sort by distance to player
-    BlockPosUtility.getBlockPosStreamWithinRadiusMatchingPredicate(localPlayerPos,
-        AUTO_FARM_RADIUS, canPlantOnBlockPosPredicate(level)).findFirst().ifPresent(blockPos -> {
-      final var blockPosVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
-      final var blockHitResult = new BlockHitResult(blockPosVec, Direction.UP, blockPos, false);
-      multiPlayerGameMode.useItemOn(localPlayer, InteractionHand.MAIN_HAND, blockHitResult);
-    });
-
-    return false;
-  };
+  private final EventSubscriber<LocalPlayerSendPositionEvent> localPlayerSendPositionEventSubscriber = this::onLocalPlayerSendPosition;
 
   @Inject
   public AutoFarmFeature(final EventBus eventBus) {
     super(AUTO_FARM_UNIQUE_IDENTIFIER, AUTO_FARM_HUMAN_IDENTIFIER, AUTO_FARM_VERSION,
         AUTO_FARM_AUTHORS);
     this.eventBus = eventBus;
+  }
+
+  private boolean onLocalPlayerSendPosition(final LocalPlayerSendPositionEvent event) {
+    final var minecraft = Minecraft.getInstance();
+    final var multiPlayerGameMode = minecraft.gameMode;
+    assert multiPlayerGameMode != null;
+
+    final var localPlayer = event.localPlayer();
+    final var localPlayerPos = localPlayer.blockPosition();
+    final var level = localPlayer.level;
+
+    // TODO: Sort by distance to player
+    BlockPosUtility.getBlockPosStreamWithinRadiusMatchingPredicate(localPlayerPos, AUTO_FARM_RADIUS,
+        canPlantOnBlockPosPredicate(level)).findFirst().ifPresent(blockPos -> {
+      final var blockPosVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+      final var blockHitResult = new BlockHitResult(blockPosVec, Direction.UP, blockPos, false);
+      multiPlayerGameMode.useItemOn(localPlayer, InteractionHand.MAIN_HAND, blockHitResult);
+    });
+
+    return false;
   }
 
   private Predicate<BlockPos> canPlantOnBlockPosPredicate(final Level level) {
