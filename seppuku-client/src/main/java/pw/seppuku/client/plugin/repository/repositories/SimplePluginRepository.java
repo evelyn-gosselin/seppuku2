@@ -53,9 +53,7 @@ public final class SimplePluginRepository implements PluginRepository {
 
   @Override
   public <T extends Plugin> void removeAll(final Collection<? extends T> pluginsToRemove) {
-    for (final var pluginToRemove : pluginsToRemove) {
-      remove(pluginToRemove);
-    }
+    pluginsToRemove.forEach(this::remove);
   }
 
   @Override
