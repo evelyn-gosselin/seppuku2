@@ -172,7 +172,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
   private List<Plugin> createPluginInstances(final List<Class<?>> pluginClasses) {
     return pluginClasses.stream().filter(Plugin.class::isAssignableFrom).map(pluginClass -> {
       try {
-        return resolver.resolveDependenciesAndCreate(pluginClass);
+        return resolver.create(pluginClass);
       } catch (final InstantiationException | IllegalAccessException | InvocationTargetException exception) {
         exception.printStackTrace();
         throw new RuntimeException(exception);

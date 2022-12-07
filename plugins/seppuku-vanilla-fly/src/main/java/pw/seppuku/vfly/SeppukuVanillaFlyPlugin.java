@@ -40,7 +40,7 @@ public final class SeppukuVanillaFlyPlugin extends AbstractPlugin {
   @Override
   public void load()
       throws InvocationTargetException, InstantiationException, IllegalAccessException, DuplicateUniqueIdentifierFeatureException {
-    featureRepository.add(resolver.resolveDependenciesAndCreate(VanillaFlyFeature.class));
+    featureRepository.add(resolver.create(VanillaFlyFeature.class));
   }
 
   @Override

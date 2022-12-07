@@ -43,10 +43,10 @@ public final class SeppukuChatInterfacePlugin extends AbstractPlugin {
   @Override
   public void load()
       throws InvocationTargetException, InstantiationException, IllegalAccessException, DuplicateUniqueIdentifierFeatureException {
-    featureRepository.add(resolver.resolveDependenciesAndCreate(ChatInterfaceFeature.class));
-    featureRepository.add(resolver.resolveDependenciesAndCreate(HelpFeature.class));
-    featureRepository.add(resolver.resolveDependenciesAndCreate(PluginsFeature.class));
-    featureRepository.add(resolver.resolveDependenciesAndCreate(ToggleFeature.class));
+    featureRepository.add(resolver.create(ChatInterfaceFeature.class));
+    featureRepository.add(resolver.create(HelpFeature.class));
+    featureRepository.add(resolver.create(PluginsFeature.class));
+    featureRepository.add(resolver.create(ToggleFeature.class));
   }
 
   @Override

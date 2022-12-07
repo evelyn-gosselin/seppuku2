@@ -39,7 +39,7 @@ public final class SeppukuSprintPlugin extends AbstractPlugin {
   @Override
   public void load()
       throws InvocationTargetException, InstantiationException, IllegalAccessException, DuplicateUniqueIdentifierFeatureException {
-    featureRepository.add(resolver.resolveDependenciesAndCreate(SprintFeature.class));
+    featureRepository.add(resolver.create(SprintFeature.class));
   }
 
   @Override

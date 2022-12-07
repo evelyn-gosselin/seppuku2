@@ -37,7 +37,7 @@ public final class SimpleResolver implements Resolver {
   }
 
   @Override
-  public <T> T resolveDependenciesAndCreate(final Class<T> type)
+  public <T> T create(final Class<T> type)
       throws InvocationTargetException, InstantiationException, IllegalAccessException {
     final var optimalConstructor = findOptimalConstructor(type);
     final var dependencies = resolveDependencies(optimalConstructor);

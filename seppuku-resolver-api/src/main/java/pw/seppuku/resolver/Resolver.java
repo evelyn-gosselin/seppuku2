@@ -6,6 +6,6 @@ public interface Resolver {
 
   <T> T resolveDependency(final Class<T> dependencyType);
 
-  <T> T resolveDependenciesAndCreate(final Class<T> type)
+  <T> T create(final Class<T> type)
       throws InvocationTargetException, InstantiationException, IllegalAccessException;
 }

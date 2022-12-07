@@ -39,7 +39,7 @@ public final class SeppukuHeadsUpPlugin extends AbstractPlugin {
   @Override
   public void load()
       throws InvocationTargetException, InstantiationException, IllegalAccessException, DuplicateUniqueIdentifierFeatureException {
-    featureRepository.add(resolver.resolveDependenciesAndCreate(HeadsUpFeature.class));
+    featureRepository.add(resolver.create(HeadsUpFeature.class));
   }
 
   @Override

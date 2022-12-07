@@ -19,16 +19,17 @@ public final class Seppuku {
 
   private static volatile Seppuku instance = null;
 
-  private final Resolver resolver = new SimpleResolver(
-      Map.of(EventBus.class, new SimpleEventBus(), FeatureRepository.class,
-          new SimpleFeatureRepository(), PluginRepository.class, new SimplePluginRepository()));
+  private final Resolver resolver = new SimpleResolver(Map.of(
+      EventBus.class, new SimpleEventBus(),
+      FeatureRepository.class, new SimpleFeatureRepository(),
+      PluginRepository.class, new SimplePluginRepository()
+  ));
 
   private Seppuku()
       throws DuplicateUniqueIdentifierFeatureException, CouldNotBeFoundFeatureException, InvocationTargetException, InstantiationException, IllegalAccessException {
     final var featureRepository = resolver.resolveDependency(FeatureRepository.class);
 
-    final var pluginLoaderFeature = resolver.resolveDependenciesAndCreate(
-        PluginLoaderFeature.class);
+    final var pluginLoaderFeature = resolver.create(PluginLoaderFeature.class);
 
     featureRepository.add(pluginLoaderFeature);
     pluginLoaderFeature.load();
