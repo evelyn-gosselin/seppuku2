@@ -55,7 +55,9 @@ public final class SimpleFeatureRepository implements FeatureRepository {
 
   @Override
   public <T extends Feature> void removeAll(final Collection<? extends T> featuresToRemove) {
-    featuresToRemove.forEach(this::remove);
+    for (final var featureToRemove : featuresToRemove) {
+      remove(featureToRemove);
+    }
   }
 
   @Override
