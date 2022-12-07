@@ -1,9 +1,6 @@
 package pw.seppuku.at.toggleable.features;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
@@ -51,31 +48,29 @@ public final class AutoToolFeature extends ToggleableFeature {
 
     final var blockState = level.getBlockState(event.blockPos());
 
-    getBestRatedSlotAgainstBlockState(blockState, localPlayer).ifPresent(
+    // TODO: Send packet
+    getBestRatedSlotAgainstBlockState(localPlayer, blockState).ifPresent(
         slot -> localPlayer.getInventory().selected = slot);
 
     return false;
   }
 
-  private Optional<Integer> getBestRatedSlotAgainstBlockState(final BlockState blockState,
-      final LocalPlayer localPlayer) {
-    return buildSlotToRatingMap(blockState, localPlayer).entrySet().stream()
-        .max(this::compareSlotToRatingEntries).map(Entry::getKey);
-  }
+  private Optional<Integer> getBestRatedSlotAgainstBlockState(final LocalPlayer localPlayer,
+      final BlockState blockState) {
+    final var inventory = localPlayer.getInventory();
 
-  private Map<Integer, Float> buildSlotToRatingMap(final BlockState blockState,
-      final LocalPlayer localPlayer) {
-    final var slotToRatingMap = new HashMap<Integer, Float>();
-
+    Integer bestSlot = null;
+    Float bestSlotRating = null;
     for (var slot = 0; slot < 9; ++slot) {
-      final var itemStack = localPlayer.getInventory().getItem(slot);
+      final var itemStack = inventory.getItem(slot);
       final var itemStackRating = calculateItemStackRatingAgainstBlockState(itemStack, blockState);
-      if (itemStackRating > 1) {
-        slotToRatingMap.put(slot, itemStackRating);
+      if (itemStackRating > 1 && (bestSlotRating == null || itemStackRating > bestSlotRating)) {
+        bestSlot = slot;
+        bestSlotRating = itemStackRating;
       }
     }
 
-    return slotToRatingMap;
+    return Optional.ofNullable(bestSlot);
   }
 
   private float calculateItemStackRatingAgainstBlockState(final ItemStack itemStack,
@@ -83,11 +78,6 @@ public final class AutoToolFeature extends ToggleableFeature {
     // TODO: take enchantments into account
 
     return itemStack.getDestroySpeed(blockState);
-  }
-
-  private int compareSlotToRatingEntries(final Entry<Integer, Float> lhs,
-      final Entry<Integer, Float> rhs) {
-    return Float.compare(lhs.getValue(), rhs.getValue());
   }
 
   @Override

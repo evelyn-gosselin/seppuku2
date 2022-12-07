@@ -3,7 +3,6 @@ package pw.seppuku.hu.persistent.features;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.subscribe.EventSubscriber;
 import pw.seppuku.events.minecraft.client.gui.GuiRenderEvent;
@@ -38,15 +37,14 @@ public final class HeadsUpFeature extends PersistentFeature {
   }
 
   private boolean onGuiRender(final GuiRenderEvent event) {
-    final var y = new AtomicInteger(2);
-    featureRepository.stream().filter(ToggleableFeature.class::isInstance)
-        .map(ToggleableFeature.class::cast).filter(ToggleableFeature::isRunning)
-        .forEach(toggleableFeature -> {
-          event.gui().getFont()
-              .drawShadow(event.poseStack(), toggleableFeature.humanIdentifier(), 2, y.get(),
-                  0xffffff);
-          y.addAndGet(2 + event.gui().getFont().lineHeight);
-        });
+    var y = 2;
+    for (final var feature : featureRepository) {
+      if (feature instanceof ToggleableFeature toggleableFeature && toggleableFeature.isRunning()) {
+        event.gui().getFont()
+            .drawShadow(event.poseStack(), toggleableFeature.humanIdentifier(), 2, y, 0xffffff);
+        y += 2 + event.gui().getFont().lineHeight;
+      }
+    }
 
     return false;
   }

@@ -1,16 +1,18 @@
 package pw.seppuku.af.toggleable.features;
 
+import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AirBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -51,49 +53,67 @@ public final class AutoFarmFeature extends ToggleableFeature {
     assert multiPlayerGameMode != null;
 
     final var localPlayer = event.localPlayer();
-    final var localPlayerPos = localPlayer.blockPosition();
     final var level = localPlayer.level;
 
-    // TODO: Sort by distance to player
-    getBlockPosStreamWithinRadiusMatchingPredicate(localPlayerPos,
-        canPlantOnBlockPosPredicate(level)).findFirst().ifPresent(blockPos -> {
+    final var blockPosList = getBlockPosListWithinRadius(localPlayer.blockPosition());
+    blockPosList.sort(comparingByDistanceToLocalPlayer(localPlayer));
+
+    for (final var blockPos : blockPosList) {
+      final var blockState = level.getBlockState(blockPos);
+      final var block = blockState.getBlock();
+      if (!isBlockPosFarmBlock(block)) {
+        continue;
+      }
+
+      final var plantBlockPos = blockPos.above();
+      final var plantBlockState = level.getBlockState(plantBlockPos);
+      final var plantBlock = plantBlockState.getBlock();
+      if (!isBlockPosAirBlock(plantBlock)) {
+        continue;
+      }
+
       final var blockPosVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
       final var blockHitResult = new BlockHitResult(blockPosVec, Direction.UP, blockPos, false);
       multiPlayerGameMode.useItemOn(localPlayer, InteractionHand.MAIN_HAND, blockHitResult);
-    });
+      break;
+    }
 
     return false;
   }
 
-  private Stream<BlockPos> getBlockPosStreamWithinRadiusMatchingPredicate(final BlockPos center,
-      final Predicate<BlockPos> predicate) {
-    final var from = center.offset(-AutoFarmFeature.AUTO_FARM_RADIUS,
-        -AutoFarmFeature.AUTO_FARM_RADIUS, -AutoFarmFeature.AUTO_FARM_RADIUS);
+  private List<BlockPos> getBlockPosListWithinRadius(final BlockPos center) {
+    final var from = center.offset(-AUTO_FARM_RADIUS, -AUTO_FARM_RADIUS, -AUTO_FARM_RADIUS);
+    final var to = center.offset(AUTO_FARM_RADIUS, AUTO_FARM_RADIUS, AUTO_FARM_RADIUS);
 
-    final var to = center.offset(AutoFarmFeature.AUTO_FARM_RADIUS, AutoFarmFeature.AUTO_FARM_RADIUS,
-        AutoFarmFeature.AUTO_FARM_RADIUS);
+    final var min = new BlockPos(Math.min(from.getX(), to.getX()), Math.min(from.getY(), to.getY()),
+        Math.min(from.getZ(), to.getZ()));
 
-    return BlockPos.betweenClosedStream(from, to).filter(predicate);
+    final var max = new BlockPos(Math.max(from.getX(), to.getX()), Math.max(from.getY(), to.getY()),
+        Math.max(from.getZ(), to.getZ()));
+
+    final var blockPosList = new ArrayList<BlockPos>();
+    for (var x = min.getX(); x < max.getX(); ++x) {
+      for (var y = min.getY(); y < max.getY(); ++y) {
+        for (var z = min.getZ(); z < max.getZ(); ++z) {
+          blockPosList.add(new BlockPos(x, y, z));
+        }
+      }
+    }
+
+    return blockPosList;
   }
 
-  private Predicate<BlockPos> canPlantOnBlockPosPredicate(final Level level) {
-    return isBlockPosFarmBlockPredicate(level).and(isBlockPosAboveBlockPosEmptyPredicate(level));
+  private boolean isBlockPosFarmBlock(final Block block) {
+    return block instanceof FarmBlock;
   }
 
-  private Predicate<BlockPos> isBlockPosFarmBlockPredicate(final Level level) {
-    return blockPos -> {
-      final var blockState = level.getBlockState(blockPos);
-      final var block = blockState.getBlock();
-      return block instanceof FarmBlock;
-    };
+  private boolean isBlockPosAirBlock(final Block block) {
+    return block instanceof AirBlock;
   }
 
-  private Predicate<BlockPos> isBlockPosAboveBlockPosEmptyPredicate(final Level level) {
-    return blockPos -> {
-      final var blockState = level.getBlockState(blockPos.above());
-      final var block = blockState.getBlock();
-      return block instanceof AirBlock;
-    };
+  private Comparator<BlockPos> comparingByDistanceToLocalPlayer(final LocalPlayer localPlayer) {
+    return Comparator.comparingDouble(
+        blockPos -> localPlayer.distanceToSqr(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
   }
 
   @Override

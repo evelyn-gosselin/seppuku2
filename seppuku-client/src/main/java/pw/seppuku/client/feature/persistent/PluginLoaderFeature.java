@@ -108,7 +108,9 @@ public final class PluginLoaderFeature extends PersistentFeature {
 
   private void addExternalPlugins() {
     final var externalPluginFiles = discoverExternalPluginFiles();
-    externalPluginFiles.forEach(this::addExternalPlugin);
+    for (final var externalPluginFile : externalPluginFiles) {
+      addExternalPlugin(externalPluginFile);
+    }
   }
 
   private List<File> discoverExternalPluginFiles() {
@@ -131,14 +133,14 @@ public final class PluginLoaderFeature extends PersistentFeature {
     final var pluginClasses = loadPluginClasses(pluginClassLoader, pluginZipClassEntries);
     final var pluginInstances = createPluginInstances(pluginClasses);
 
-    pluginInstances.forEach(plugin -> {
+    for (final var plugin : pluginInstances) {
       try {
         pluginRepository.add(plugin);
       } catch (final DuplicateUniqueIdentifierPluginException exception) {
         exception.printStackTrace();
         throw new RuntimeException(exception);
       }
-    });
+    }
   }
 
   private URL getPluginUrl(final File pluginFile) {
@@ -172,7 +174,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
       final List<? extends ZipEntry> pluginZipClassEntries) {
     final var classes = new ArrayList<Class<?>>();
 
-    pluginZipClassEntries.forEach(zipEntry -> {
+    for (final var zipEntry : pluginZipClassEntries) {
       try {
         final var pluginClass = pluginClassLoader.loadClass(
             zipEntry.getName().substring(0, zipEntry.getName().length() - 6).replace("/", "."));
@@ -181,7 +183,7 @@ public final class PluginLoaderFeature extends PersistentFeature {
         exception.printStackTrace();
         throw new RuntimeException(exception);
       }
-    });
+    }
 
     return classes;
   }
