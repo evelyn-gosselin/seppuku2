@@ -3,13 +3,13 @@ package pw.seppuku.ci.execute.features;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import pw.seppuku.feature.exception.exceptions.CouldNotBeFoundFeatureException;
 import pw.seppuku.feature.execute.ExecutableFeature;
-import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.feature.toggleable.ToggleableFeature;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.resolver.Inject;
+import pw.seppuku.transform.bundle.TransformerBundle;
+import pw.seppuku.transform.exception.TransformException;
 
 public final class ToggleFeature extends ExecutableFeature {
 
@@ -22,21 +22,19 @@ public final class ToggleFeature extends ExecutableFeature {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  private final FeatureRepository featureRepository;
+  private final TransformerBundle transformerBundle;
 
   @Inject
-  public ToggleFeature(final FeatureRepository featureRepository) {
+  public ToggleFeature(final TransformerBundle transformerBundle) {
     super(TOGGLE_UNIQUE_IDENTIFIER, TOGGLE_HUMAN_IDENTIFIER, TOGGLE_VERSION, TOGGLE_AUTHORS);
-    this.featureRepository = featureRepository;
+    this.transformerBundle = transformerBundle;
   }
 
   @Override
-  public void execute(final String... rest) throws CouldNotBeFoundFeatureException {
+  public void execute(final String... rest) throws TransformException {
     final var humanIdentifier = rest[0];
-    final var toggleableFeature = featureRepository.findFeaturesByHumanIdentifier(humanIdentifier,
-            ToggleableFeature.class).stream().findFirst()
-        .orElseThrow(() -> new CouldNotBeFoundFeatureException(humanIdentifier));
-
+    final var toggleableFeature = transformerBundle.transform(String.class, ToggleableFeature.class,
+        humanIdentifier);
     toggleableFeature.setRunning(!toggleableFeature.isRunning());
   }
 

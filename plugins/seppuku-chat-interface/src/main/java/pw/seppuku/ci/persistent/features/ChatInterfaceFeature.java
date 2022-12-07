@@ -35,8 +35,7 @@ public final class ChatInterfaceFeature extends PersistentFeature {
   private final EventSubscriber<ChatScreenHandleInputEvent> chatScreenHandleInputEventSubscriber;
 
   @Inject
-  public ChatInterfaceFeature(final EventBus eventBus, final FeatureRepository featureRepository,
-      final TransformerBundle transformerBundle) {
+  public ChatInterfaceFeature(final EventBus eventBus, final TransformerBundle transformerBundle) {
     super(CHAT_INTERFACE_UNIQUE_IDENTIFIER, CHAT_INTERFACE_HUMAN_IDENTIFIER, CHAT_INTERFACE_VERSION,
         CHAT_INTERFACE_AUTHORS);
     this.eventBus = eventBus;
@@ -46,18 +45,30 @@ public final class ChatInterfaceFeature extends PersistentFeature {
         return false;
       }
 
-      final var content = event.message().replaceFirst(".", "");
-      final var parts = Arrays.stream(content.split(" ")).collect(Collectors.toList());
-      final var potentialFeatures = featureRepository.findFeaturesByHumanIdentifier(parts.get(0),
-          ExecutableFeature.class);
-      final var feature = potentialFeatures.stream().findFirst()
-          .orElseThrow(() -> new CouldNotBeFoundFeatureException(parts.get(0)));
+      final var command = stripPrefixFromMessage(event.message());
+      final var commandParts = splitCommandToCommandParts(command);
+      final var commandArguments = splitCommandPartsToCommandArguments(commandParts);
 
-      parts.remove(0);
-      feature.execute(parts.toArray(String[]::new));
+      final var executableFeatureHumanIdentifier = commandParts.get(0);
+      final var executableFeature = transformerBundle.transform(String.class,
+          ExecutableFeature.class, executableFeatureHumanIdentifier);
+
+      executableFeature.execute(commandArguments.toArray(String[]::new));
 
       return true;
     };
+  }
+
+  private String stripPrefixFromMessage(final String message) {
+    return message.replaceFirst(CHAT_INTERFACE_PREFIX, "");
+  }
+
+  private List<String> splitCommandToCommandParts(final String command) {
+    return Arrays.stream(command.split(" ")).toList();
+  }
+
+  private List<String> splitCommandPartsToCommandArguments(final List<String> commandParts) {
+    return commandParts.stream().skip(1).toList();
   }
 
   @Override

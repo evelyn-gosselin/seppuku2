@@ -1,6 +1,7 @@
 package pw.seppuku.transform.transformers;
 
 import pw.seppuku.transform.AbstractTransformer;
+import pw.seppuku.transform.exception.exceptions.TransformLazyException;
 
 public final class StringToByteTransformer extends AbstractTransformer<String, Byte> {
 
@@ -9,7 +10,11 @@ public final class StringToByteTransformer extends AbstractTransformer<String, B
   }
 
   @Override
-  public Byte transform(final String fromInstance) {
-    return Byte.parseByte(fromInstance);
+  public Byte transform(final String fromInstance) throws TransformLazyException {
+    try {
+      return Byte.parseByte(fromInstance);
+    } catch (final NumberFormatException exception) {
+      throw new TransformLazyException("Invalid byte '" + fromInstance + "'");
+    }
   }
 }

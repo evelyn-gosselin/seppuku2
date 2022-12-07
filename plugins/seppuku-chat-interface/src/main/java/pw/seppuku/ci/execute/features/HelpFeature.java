@@ -10,6 +10,8 @@ import pw.seppuku.feature.repository.FeatureRepository;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.resolver.Inject;
+import pw.seppuku.transform.bundle.TransformerBundle;
+import pw.seppuku.transform.exception.TransformException;
 
 public final class HelpFeature extends ExecutableFeature {
 
@@ -22,23 +24,20 @@ public final class HelpFeature extends ExecutableFeature {
       new Author("wine", Optional.of("Ossian"), Optional.of("Winter"),
           Optional.of("ossian@hey.com")));
 
-  private final FeatureRepository featureRepository;
+  private final TransformerBundle transformerBundle;
 
   @Inject
-  public HelpFeature(final FeatureRepository featureRepository) {
+  public HelpFeature(final TransformerBundle transformerBundle) {
     super(HELP_UNIQUE_IDENTIFIER, HELP_HUMAN_IDENTIFIER, HELP_VERSION, HELP_AUTHORS);
-    this.featureRepository = featureRepository;
+    this.transformerBundle = transformerBundle;
   }
 
   @Override
-  public void execute(final String... rest) throws CouldNotBeFoundFeatureException {
+  public void execute(final String... rest) throws TransformException {
     final var humanIdentifier = rest[0];
-    final var feature = featureRepository.findFeaturesByHumanIdentifier(humanIdentifier,
-            Feature.class).stream()
-        .findFirst()
-        .orElseThrow(() -> new CouldNotBeFoundFeatureException(humanIdentifier));
+    final var feature = transformerBundle.transform(String.class, Feature.class, humanIdentifier);
 
-    // TODO: Sprint to chat
+    // TODO: Print to chat
     System.out.println(feature.uniqueIdentifier());
     System.out.println(feature.humanIdentifier());
     System.out.println(feature.version());

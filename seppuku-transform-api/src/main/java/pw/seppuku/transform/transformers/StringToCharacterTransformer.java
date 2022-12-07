@@ -1,6 +1,7 @@
 package pw.seppuku.transform.transformers;
 
 import pw.seppuku.transform.AbstractTransformer;
+import pw.seppuku.transform.exception.exceptions.TransformLazyException;
 
 public final class StringToCharacterTransformer extends AbstractTransformer<String, Character> {
 
@@ -9,9 +10,9 @@ public final class StringToCharacterTransformer extends AbstractTransformer<Stri
   }
 
   @Override
-  public Character transform(final String fromInstance) {
+  public Character transform(final String fromInstance) throws TransformLazyException {
     if (fromInstance.length() > 1) {
-      return null; // TODO: Throw exception
+      throw new TransformLazyException("Invalid character '" + fromInstance + "'");
     }
 
     return fromInstance.charAt(0);
