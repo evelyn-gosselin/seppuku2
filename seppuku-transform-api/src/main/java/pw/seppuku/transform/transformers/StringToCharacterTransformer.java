@@ -11,7 +11,7 @@ public final class StringToCharacterTransformer extends AbstractTransformer<Stri
 
   @Override
   public Character transform(final String fromInstance) throws TransformLazyException {
-    if (fromInstance.length() > 1) {
+    if (fromInstance.length() != 1) {
       throw new TransformLazyException("Invalid character '" + fromInstance + "'");
     }
 

@@ -10,6 +10,7 @@ import pw.seppuku.transform.transformers.StringToFloatTransformer;
 import pw.seppuku.transform.transformers.StringToIntegerTransformer;
 import pw.seppuku.transform.transformers.StringToLongTransformer;
 import pw.seppuku.transform.transformers.StringToShortTransformer;
+import pw.seppuku.transform.transformers.StringToUniqueIdentifierTransformer;
 
 public interface Transformer<F, T> {
 
@@ -23,7 +24,8 @@ public interface Transformer<F, T> {
         new StringToFloatTransformer(),
         new StringToIntegerTransformer(),
         new StringToLongTransformer(),
-        new StringToShortTransformer()
+        new StringToShortTransformer(),
+        new StringToUniqueIdentifierTransformer()
     );
     // @formatter:on
   }
