@@ -8,12 +8,22 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pw.seppuku.client.Seppuku;
+import pw.seppuku.events.minecraft.client.multiplayer.MultiPlayerGameModeContinueDestroyBlockEvent;
 import pw.seppuku.events.minecraft.client.multiplayer.MultiPlayerGameModeDestroyBlockEvent;
 import pw.seppuku.events.minecraft.client.multiplayer.MultiPlayerGameModeStartDestroyBlockEvent;
 import pw.seppuku.mixin.Actual;
 
 @Mixin(MultiPlayerGameMode.class)
 public abstract class MultiPlayerGameModeMixin implements Actual<MultiPlayerGameMode> {
+
+  @Inject(method = "destroyBlock", at = @At("HEAD"), cancellable = true)
+  private void onDestroyBlockHead(final BlockPos blockPos,
+      final CallbackInfoReturnable<Boolean> callback) {
+    if (Seppuku.instance().eventBus()
+        .publish(new MultiPlayerGameModeDestroyBlockEvent(actual(), blockPos))) {
+      callback.setReturnValue(false);
+    }
+  }
 
   @Inject(method = "startDestroyBlock", at = @At("HEAD"), cancellable = true)
   private void onStartDestroyBlockHead(final BlockPos blockPos, final Direction direction,
@@ -24,11 +34,11 @@ public abstract class MultiPlayerGameModeMixin implements Actual<MultiPlayerGame
     }
   }
 
-  @Inject(method = "destroyBlock", at = @At("HEAD"), cancellable = true)
-  private void onDestroyBlockHead(final BlockPos blockPos,
+  @Inject(method = "continueDestroyBlock", at = @At("HEAD"), cancellable = true)
+  private void onContinueDestroyBlockHead(final BlockPos blockPos, final Direction direction,
       final CallbackInfoReturnable<Boolean> callback) {
     if (Seppuku.instance().eventBus()
-        .publish(new MultiPlayerGameModeDestroyBlockEvent(actual(), blockPos))) {
+        .publish(new MultiPlayerGameModeContinueDestroyBlockEvent(actual(), blockPos, direction))) {
       callback.setReturnValue(false);
     }
   }
