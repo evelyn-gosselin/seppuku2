@@ -29,6 +29,7 @@ include(
 
     "plugins:seppuku-auto-tool",
     "plugins:seppuku-chat-interface",
+    "plugins:seppuku-fast-mine",
     "plugins:seppuku-heads-up",
     "plugins:seppuku-sprint",
     "plugins:seppuku-vanilla-fly",
