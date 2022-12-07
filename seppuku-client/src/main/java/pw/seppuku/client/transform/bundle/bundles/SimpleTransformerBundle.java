@@ -1,4 +1,4 @@
-package pw.seppuku.client.transform.bundle.bundle;
+package pw.seppuku.client.transform.bundle.bundles;
 
 import java.util.HashMap;
 import java.util.List;

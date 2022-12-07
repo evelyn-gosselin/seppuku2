@@ -7,7 +7,7 @@ import pw.seppuku.client.feature.persistent.PluginLoaderFeature;
 import pw.seppuku.client.feature.repository.repositories.SimpleFeatureRepository;
 import pw.seppuku.client.plugin.repository.repositories.SimplePluginRepository;
 import pw.seppuku.client.resolver.resolvers.SimpleResolver;
-import pw.seppuku.client.transform.bundle.bundle.SimpleTransformerBundle;
+import pw.seppuku.client.transform.bundle.bundles.SimpleTransformerBundle;
 import pw.seppuku.client.transform.transformers.StringToExecutableFeatureTransformer;
 import pw.seppuku.client.transform.transformers.StringToFeatureTransformer;
 import pw.seppuku.client.transform.transformers.StringToPersistentFeatureTransformer;
