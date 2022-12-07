@@ -44,9 +44,8 @@ public final class AutoToolFeature extends ToggleableFeature {
 
     final var blockState = level.getBlockState(event.blockPos());
 
-    getBestRatedSlotAgainstBlockState(blockState, localPlayer).ifPresent(slot -> {
-      localPlayer.getInventory().selected = slot;
-    });
+    getBestRatedSlotAgainstBlockState(blockState, localPlayer).ifPresent(
+        slot -> localPlayer.getInventory().selected = slot);
 
     return false;
   };
