@@ -29,6 +29,7 @@ include(
     "seppuku-resolver-api",
     "seppuku-transform-api",
 
+    "plugins:seppuku-auto-farm",
     "plugins:seppuku-auto-tool",
     "plugins:seppuku-chat-interface",
     "plugins:seppuku-fast-mine",
