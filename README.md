@@ -1,4 +1,4 @@
-# seppuku2
+# Seppuku²
 
 > **Warning**
 >
