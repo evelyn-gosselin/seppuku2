@@ -19,7 +19,6 @@ include(
 
     "seppuku-events",
     "seppuku-access",
-    "seppuku-mdk",
 
     "seppuku-metadata-api",
     "seppuku-event-api",

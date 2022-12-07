@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,7 +18,6 @@ import pw.seppuku.event.bus.EventBus;
 import pw.seppuku.event.subscribe.EventSubscriber;
 import pw.seppuku.events.minecraft.client.player.LocalPlayerSendPositionEvent;
 import pw.seppuku.feature.toggleable.ToggleableFeature;
-import pw.seppuku.mdk.block.BlockPosUtility;
 import pw.seppuku.metadata.Author;
 import pw.seppuku.metadata.Version;
 import pw.seppuku.resolver.Inject;
@@ -55,7 +55,7 @@ public final class AutoFarmFeature extends ToggleableFeature {
     final var level = localPlayer.level;
 
     // TODO: Sort by distance to player
-    BlockPosUtility.getBlockPosStreamWithinRadiusMatchingPredicate(localPlayerPos, AUTO_FARM_RADIUS,
+    getBlockPosStreamWithinRadiusMatchingPredicate(localPlayerPos,
         canPlantOnBlockPosPredicate(level)).findFirst().ifPresent(blockPos -> {
       final var blockPosVec = new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ());
       final var blockHitResult = new BlockHitResult(blockPosVec, Direction.UP, blockPos, false);
@@ -65,11 +65,22 @@ public final class AutoFarmFeature extends ToggleableFeature {
     return false;
   }
 
-  private Predicate<BlockPos> canPlantOnBlockPosPredicate(final Level level) {
-    return isFarmBlockPredicate(level).and(isBlockAboveEmptyPredicate(level));
+  private Stream<BlockPos> getBlockPosStreamWithinRadiusMatchingPredicate(final BlockPos center,
+      final Predicate<BlockPos> predicate) {
+    final var from = center.offset(-AutoFarmFeature.AUTO_FARM_RADIUS,
+        -AutoFarmFeature.AUTO_FARM_RADIUS, -AutoFarmFeature.AUTO_FARM_RADIUS);
+
+    final var to = center.offset(AutoFarmFeature.AUTO_FARM_RADIUS, AutoFarmFeature.AUTO_FARM_RADIUS,
+        AutoFarmFeature.AUTO_FARM_RADIUS);
+
+    return BlockPos.betweenClosedStream(from, to).filter(predicate);
   }
 
-  private Predicate<BlockPos> isFarmBlockPredicate(final Level level) {
+  private Predicate<BlockPos> canPlantOnBlockPosPredicate(final Level level) {
+    return isBlockPosFarmBlockPredicate(level).and(isBlockPosAboveBlockPosEmptyPredicate(level));
+  }
+
+  private Predicate<BlockPos> isBlockPosFarmBlockPredicate(final Level level) {
     return blockPos -> {
       final var blockState = level.getBlockState(blockPos);
       final var block = blockState.getBlock();
@@ -77,7 +88,7 @@ public final class AutoFarmFeature extends ToggleableFeature {
     };
   }
 
-  private Predicate<BlockPos> isBlockAboveEmptyPredicate(final Level level) {
+  private Predicate<BlockPos> isBlockPosAboveBlockPosEmptyPredicate(final Level level) {
     return blockPos -> {
       final var blockState = level.getBlockState(blockPos.above());
       final var block = blockState.getBlock();

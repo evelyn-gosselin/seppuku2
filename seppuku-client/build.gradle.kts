@@ -12,7 +12,6 @@ dependencies {
 
     implementation(project(":seppuku-events", configuration = "namedElements"))
     implementation(project(":seppuku-access", configuration = "namedElements"))
-    implementation(project(":seppuku-mdk", configuration = "namedElements"))
 
     implementation(project(":seppuku-metadata-api"))
     implementation(project(":seppuku-event-api"))
