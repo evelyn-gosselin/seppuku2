@@ -18,6 +18,7 @@ dependencies {
 
     implementation(project(":seppuku-sdk:components"))
     implementation(project(":seppuku-sdk:feature-system"))
+    implementation(project(":seppuku-sdk:repository"))
 }
 
 tasks {

@@ -8,9 +8,10 @@ import org.spongepowered.asm.mixin.injection.Inject
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import pw.seppuku.client.Seppuku
 import pw.seppuku.client.components.client.gui.hud.InGameHudRender
-import pw.seppuku.client.feature.running
-import pw.seppuku.client.feature.withComponent
 import pw.seppuku.client.mixin.ActualThis
+import pw.seppuku.components.Toggle
+import pw.seppuku.feature.filterComponent
+import pw.seppuku.feature.mapComponent
 
 @Mixin(InGameHud::class)
 abstract class InGameHudMixin : ActualThis<InGameHud> {
@@ -18,7 +19,7 @@ abstract class InGameHudMixin : ActualThis<InGameHud> {
     @Inject(method = ["render"], at = [At("TAIL")])
     private fun onRenderTail(matrices: MatrixStack, tickDelta: Float, callback: CallbackInfo) =
         Seppuku.featureRepository.findAll()
-            .running()
-            .withComponent<InGameHudRender>()
+            .filterComponent<Toggle>(false)
+            .mapComponent<InGameHudRender>()
             .forEach { it.onInGameHudRender(actualThis, matrices, tickDelta) }
 }
