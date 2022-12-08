@@ -12,7 +12,7 @@ class DependencyInjectorBuilder<T : DependencyInjector>(
         if (dependencyInjectorType.isAbstract)
             error("Can't use abstract dependency injector '${dependencyInjectorType.simpleName}' with '${this::class.simpleName}'")
     }
-    
+
     fun with(
         dependencyTypeToDependencyProviderPair: Pair<KClass<*>, DependencyProvider<out Any>>
     ): DependencyInjectorBuilder<T> =

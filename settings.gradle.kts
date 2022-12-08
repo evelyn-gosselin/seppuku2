@@ -18,4 +18,5 @@ include(
     "seppuku-sdk:components",
     "seppuku-sdk:dependency-injection",
     "seppuku-sdk:feature-system",
+    "seppuku-sdk:repository",
 )
