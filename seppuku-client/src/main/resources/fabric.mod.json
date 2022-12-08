@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "seppuku-client",
-  "name": "Seppuku Client",
+  "name": "Seppuku client",
   "version": "${version}",
   "environment": "client",
   "entrypoints": {},
@@ -11,6 +11,7 @@
   "depends": {
     "minecraft": "1.19.x",
     "java": ">=17",
+    "seppuku-client-access": ">=${version}",
     "seppuku-client-components": ">=${version}"
   }
 }

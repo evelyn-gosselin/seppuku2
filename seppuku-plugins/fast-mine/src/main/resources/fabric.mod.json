@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "heads-up-display",
-  "name": "Heads up display",
+  "id": "fast-mine",
+  "name": "Fast mine",
   "version": "${version}",
   "environment": "client",
   "entrypoints": {},

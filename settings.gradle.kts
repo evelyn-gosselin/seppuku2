@@ -18,9 +18,11 @@ pluginManagement {
 
 include(
     "seppuku-client",
+    "seppuku-client-access",
     "seppuku-client-components",
 
     "seppuku-plugins:auto-tool",
+    "seppuku-plugins:fast-mine",
     "seppuku-plugins:heads-up-display",
     "seppuku-plugins:sprint",
     "seppuku-plugins:vanilla-fly",
