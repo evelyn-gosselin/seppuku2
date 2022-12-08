@@ -1,6 +1,5 @@
-package pw.seppuku.components
-
 import org.junit.jupiter.api.Test
+import pw.seppuku.components.HumanIdentifier
 import kotlin.test.assertEquals
 
 class HumanIdentifierTest {

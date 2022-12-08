@@ -1,6 +1,5 @@
-package pw.seppuku.components
-
 import org.junit.jupiter.api.Test
+import pw.seppuku.components.UniqueIdentifier
 import java.util.UUID
 import kotlin.test.assertEquals
 
