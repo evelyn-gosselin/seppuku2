@@ -11,7 +11,6 @@ data class Toggle(
         }
 
     override fun equals(other: Any?) = when (other) {
-        is Toggle -> other.state == state
         is Boolean -> other == state
         else -> super.equals(other)
     }
