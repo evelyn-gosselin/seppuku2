@@ -1,5 +1,6 @@
 package pw.seppuku.client
 
+import net.minecraft.client.MinecraftClient
 import pw.seppuku.client.feature.features.ExternalFeatureLoaderFeature
 import pw.seppuku.client.feature.repository.SeppukuFeatureRepository
 import pw.seppuku.components.HumanIdentifier
@@ -16,6 +17,8 @@ object Seppuku {
     private val dependencyInjector = SimpleDependencyInjector().apply {
         bind(DependencyInjector::class to DependencyProvider.singleton(this))
         bind(FeatureRepository::class to DependencyProvider.singleton(SeppukuFeatureRepository()))
+
+        bind(MinecraftClient::class to DependencyProvider { MinecraftClient.getInstance() })
     }
 
     val featureRepository: FeatureRepository by lazy { dependencyInjector.get() }

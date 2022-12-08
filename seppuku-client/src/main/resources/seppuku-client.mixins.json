@@ -9,6 +9,7 @@
   "client": [
     "client.MinecraftClientMixin",
     "client.gui.hud.InGameHudMixin",
-    "client.network.ClientPlayerEntityMixin"
+    "client.network.ClientPlayerEntityMixin",
+    "client.network.ClientPlayerInteractionManagerMixin"
   ]
 }

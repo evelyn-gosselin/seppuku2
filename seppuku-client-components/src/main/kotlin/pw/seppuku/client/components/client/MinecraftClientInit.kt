@@ -4,4 +4,4 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.RunArgs
 
 @JvmInline
-value class MinecraftClientInit(val onMinecraftClientInit: MinecraftClient.(runArgs: RunArgs) -> Unit)
+value class MinecraftClientInit(val onMinecraftClientInit: MinecraftClient.(RunArgs) -> Unit)

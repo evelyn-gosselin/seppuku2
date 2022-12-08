@@ -20,6 +20,7 @@ include(
     "seppuku-client",
     "seppuku-client-components",
 
+    "seppuku-plugins:auto-tool",
     "seppuku-plugins:heads-up-display",
     "seppuku-plugins:sprint",
     "seppuku-plugins:vanilla-fly",
