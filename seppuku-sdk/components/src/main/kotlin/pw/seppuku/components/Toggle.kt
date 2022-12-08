@@ -18,4 +18,9 @@ data class Toggle(
     override fun hashCode() = state.hashCode()
 
     override fun toString() = state.toString()
+
+    companion object {
+        val ENABLED: (Toggle) -> Boolean = { it.state }
+        val DISABLED: (Toggle) -> Boolean = { it.state }
+    }
 }
