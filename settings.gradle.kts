@@ -14,7 +14,10 @@ pluginManagement {
     }
 }
 
+// TODO: figure out dependencyResolutionManagement
+
 include(
+    "seppuku-client",
     "seppuku-sdk:components",
     "seppuku-sdk:dependency-injection",
     "seppuku-sdk:feature-system",

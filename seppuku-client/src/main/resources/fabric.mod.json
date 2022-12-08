@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "seppuku-client",
+  "name": "Seppuku Client",
+  "version": "${version}",
+  "environment": "client",
+  "entrypoints": {},
+  "mixins": [
+    "seppuku-client.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "1.19.x",
+    "java": ">=17"
+  }
+}
