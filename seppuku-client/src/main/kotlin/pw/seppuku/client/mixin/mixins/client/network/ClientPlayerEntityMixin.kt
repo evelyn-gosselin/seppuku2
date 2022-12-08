@@ -18,7 +18,7 @@ abstract class ClientPlayerEntityMixin : ActualThis<ClientPlayerEntity> {
     @Inject(method = ["tick"], at = [At("HEAD")])
     private fun onTickHead(callback: CallbackInfo) =
         Seppuku.featureRepository.findAll()
-            .filterComponent<Toggle>(false)
+            .filterComponent(false, Toggle.ENABLED)
             .mapComponent<ClientPlayerEntityTick>()
             .forEach { it.onClientPlayerEntityTick(actualThis) }
 }

@@ -19,7 +19,7 @@ abstract class InGameHudMixin : ActualThis<InGameHud> {
     @Inject(method = ["render"], at = [At("TAIL")])
     private fun onRenderTail(matrices: MatrixStack, tickDelta: Float, callback: CallbackInfo) =
         Seppuku.featureRepository.findAll()
-            .filterComponent<Toggle>(false)
+            .filterComponent(false, Toggle.ENABLED)
             .mapComponent<InGameHudRender>()
             .forEach { it.onInGameHudRender(actualThis, matrices, tickDelta) }
 }

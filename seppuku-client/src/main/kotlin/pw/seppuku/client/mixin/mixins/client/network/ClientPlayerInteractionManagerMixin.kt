@@ -25,7 +25,7 @@ abstract class ClientPlayerInteractionManagerMixin : ActualThis<ClientPlayerInte
         callback: CallbackInfoReturnable<Boolean>
     ) =
         Seppuku.featureRepository.findAll()
-            .filterComponent<Toggle>(false)
+            .filterComponent(false, Toggle.ENABLED)
             .mapComponent<ClientPlayerInteractionManagerAttackBlock>()
             .forEach { it.onClientPlayerInteractionManagerAttackBlock(actualThis, blockPos, direction) }
 
@@ -36,7 +36,7 @@ abstract class ClientPlayerInteractionManagerMixin : ActualThis<ClientPlayerInte
         callback: CallbackInfoReturnable<Boolean>
     ) =
         Seppuku.featureRepository.findAll()
-            .filterComponent<Toggle>(false)
+            .filterComponent(false, Toggle.ENABLED)
             .mapComponent<ClientPlayerInteractionManagerUpdateBlockBreakingProgress>()
             .forEach { it.onClientPlayerInteractionManagerUpdateBlockBreakingProgress(actualThis, blockPos, direction) }
 }

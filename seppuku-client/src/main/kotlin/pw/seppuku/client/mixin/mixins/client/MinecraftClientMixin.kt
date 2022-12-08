@@ -19,7 +19,7 @@ abstract class MinecraftClientMixin : ActualThis<MinecraftClient> {
     @Inject(method = ["<init>"], at = [At("TAIL")])
     private fun onInit(runArgs: RunArgs, callback: CallbackInfo) =
         Seppuku.featureRepository.findAll()
-            .filterComponent<Toggle>(false)
+            .filterComponent(false, Toggle.ENABLED)
             .mapComponent<MinecraftClientInit>()
             .forEach { it.onMinecraftClientInit(actualThis, runArgs) }
 }
