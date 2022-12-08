@@ -1,6 +1,6 @@
 name: Build and test projects
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   build-and-test-projects:
@@ -11,8 +11,9 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
+          cache: gradle
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Run build with Gradle wrapper
