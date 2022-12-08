@@ -1,7 +1,7 @@
 package pw.seppuku.client
 
 import net.minecraft.client.MinecraftClient
-import pw.seppuku.client.feature.features.ExternalFeatureLoaderFeature
+import pw.seppuku.client.feature.features.PluginLoaderFeature
 import pw.seppuku.client.feature.repository.SeppukuFeatureRepository
 import pw.seppuku.components.HumanIdentifier
 import pw.seppuku.di.DependencyInjector
@@ -24,10 +24,10 @@ object Seppuku {
     val featureRepository: FeatureRepository by lazy { dependencyInjector.get() }
 
     init {
-        val externalFeatureLoaderFeature = dependencyInjector.create<ExternalFeatureLoaderFeature>()
-        externalFeatureLoaderFeature.findComponentOrNull<HumanIdentifier>()?.run {
+        val pluginLoaderFeature = dependencyInjector.create<PluginLoaderFeature>()
+        pluginLoaderFeature.findComponentOrNull<HumanIdentifier>()?.run {
             featureRepository.save(
-                toString(), externalFeatureLoaderFeature
+                toString(), pluginLoaderFeature
             )
         }
     }

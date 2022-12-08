@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import kotlin.reflect.KClass
 
-class ExternalFeatureLoaderFeature(
+class PluginLoaderFeature(
     private val dependencyInjector: DependencyInjector,
     private val featureRepository: FeatureRepository
 ) : AbstractFeature() {
