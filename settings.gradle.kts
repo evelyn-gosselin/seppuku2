@@ -21,6 +21,7 @@ include(
     "seppuku-client-components",
 
     "seppuku-plugins:heads-up-display",
+    "seppuku-plugins:vanilla-fly",
 
     "seppuku-sdk:components",
     "seppuku-sdk:dependency-injection",

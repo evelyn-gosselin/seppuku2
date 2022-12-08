@@ -8,6 +8,7 @@
   "package": "pw.seppuku.client.mixin.mixins",
   "client": [
     "client.MinecraftClientMixin",
-    "client.gui.hud.InGameHudMixin"
+    "client.gui.hud.InGameHudMixin",
+    "client.network.ClientPlayerEntityMixin"
   ]
 }
