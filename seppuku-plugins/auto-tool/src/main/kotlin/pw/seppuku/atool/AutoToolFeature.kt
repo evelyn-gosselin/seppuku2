@@ -2,6 +2,7 @@ package pw.seppuku.atool
 
 import net.minecraft.block.BlockState
 import net.minecraft.client.MinecraftClient
+import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket
 import net.minecraft.util.math.BlockPos
 import pw.seppuku.client.components.client.network.ClientPlayerInteractionManagerAttackBlock
 import pw.seppuku.components.HumanIdentifier
@@ -23,7 +24,7 @@ class AutoToolFeature(
     private val clientPlayerInteractionManagerAttackBlock = ClientPlayerInteractionManagerAttackBlock { blockPos, _ ->
         val blockState = blockPos.getBlockState() ?: return@ClientPlayerInteractionManagerAttackBlock
         val bestRatedSlot = blockState.getBestRatedSlot() ?: return@ClientPlayerInteractionManagerAttackBlock
-        this@AutoToolFeature.minecraftClient.player?.inventory?.selectedSlot = bestRatedSlot
+        bestRatedSlot.selectSlot()
     }
 
     private fun BlockPos.getBlockState(): BlockState? =
@@ -36,4 +37,9 @@ class AutoToolFeature(
 
     private fun BlockState.getSlotRating(index: Int): Float =
         this@AutoToolFeature.minecraftClient.player?.inventory?.getStack(index)?.getMiningSpeedMultiplier(this) ?: 0f
+
+    private fun Int.selectSlot() {
+        val player = this@AutoToolFeature.minecraftClient.player ?: return
+        player.inventory.selectedSlot = this
+    }
 }
