@@ -18,6 +18,8 @@ pluginManagement {
 
 include(
     "seppuku-client",
+    "seppuku-client-components",
+
     "seppuku-sdk:components",
     "seppuku-sdk:dependency-injection",
     "seppuku-sdk:feature-system",
