@@ -1,16 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "seppuku-client",
-  "name": "Seppuku Client",
+  "id": "heads-up-display",
+  "name": "Heads Up Display",
   "version": "${version}",
   "environment": "client",
   "entrypoints": {},
-  "mixins": [
-    "seppuku-client.mixins.json"
-  ],
+  "mixins": [],
   "depends": {
     "minecraft": "1.19.x",
     "java": ">=17",
-    "seppuku-client-components": ">=${version}"
+    "seppuku-client": ">=${version}"
   }
 }

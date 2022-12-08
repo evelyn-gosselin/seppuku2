@@ -5,5 +5,5 @@ import pw.seppuku.di.DependencyProvider
 import kotlin.reflect.KClass
 
 class SimpleDependencyInjector(
-    dependencyTypeToDependencyProvider: Map<KClass<*>, DependencyProvider<out Any>>
+    dependencyTypeToDependencyProvider: MutableMap<KClass<*>, DependencyProvider<out Any>> = mutableMapOf()
 ) : AbstractDependencyInjector(dependencyTypeToDependencyProvider)

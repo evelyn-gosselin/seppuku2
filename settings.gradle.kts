@@ -20,6 +20,8 @@ include(
     "seppuku-client",
     "seppuku-client-components",
 
+    "seppuku-plugins:heads-up-display",
+
     "seppuku-sdk:components",
     "seppuku-sdk:dependency-injection",
     "seppuku-sdk:feature-system",

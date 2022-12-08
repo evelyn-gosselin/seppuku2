@@ -5,8 +5,12 @@ import kotlin.reflect.KClass
 import kotlin.reflect.full.starProjectedType
 
 abstract class AbstractDependencyInjector(
-    private val dependencyTypeToDependencyProvider: Map<KClass<*>, DependencyProvider<out Any>>
+    private val dependencyTypeToDependencyProvider: MutableMap<KClass<*>, DependencyProvider<out Any>>
 ) : DependencyInjector {
+
+    override fun bind(dependencyType: KClass<*>, dependencyProvider: DependencyProvider<out Any>) {
+        dependencyTypeToDependencyProvider[dependencyType] = dependencyProvider
+    }
 
     @Suppress("UNCHECKED_CAST")
     final override fun <T : Any> getOrNull(type: KClass<T>): T? =

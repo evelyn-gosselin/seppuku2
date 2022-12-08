@@ -4,6 +4,11 @@ import kotlin.reflect.KClass
 
 interface DependencyInjector {
 
+    fun bind(dependencyTypeToDependencyProviderPair: Pair<KClass<*>, DependencyProvider<out Any>>) =
+        bind(dependencyTypeToDependencyProviderPair.first, dependencyTypeToDependencyProviderPair.second)
+
+    fun bind(dependencyType: KClass<*>, dependencyProvider: DependencyProvider<out Any>)
+
     fun <T : Any> getOrNull(type: KClass<T>): T?
 
     fun <T : Any> createOrNull(type: KClass<T>): T?

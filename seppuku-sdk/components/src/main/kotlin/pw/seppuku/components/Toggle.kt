@@ -1,8 +1,8 @@
 package pw.seppuku.components
 
 data class Toggle(
-    private val onStateChange: Boolean.() -> Unit,
     private val initialState: Boolean = false,
+    private val onStateChange: Boolean.() -> Unit = {},
 ) {
     var state: Boolean = initialState
         set(value) {
