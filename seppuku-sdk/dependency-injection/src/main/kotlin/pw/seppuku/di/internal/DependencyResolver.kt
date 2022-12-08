@@ -2,6 +2,7 @@ package pw.seppuku.di.internal
 
 import pw.seppuku.di.DependencyProvider
 import kotlin.reflect.KClass
+import kotlin.reflect.KClassifier
 import kotlin.reflect.KFunction
 
 internal object DependencyResolver {
@@ -28,7 +29,11 @@ internal object DependencyResolver {
         dependencyTypeToDependencyProvider: Map<KClass<*>, DependencyProvider<out Any>>
     ): Array<Any?> = constructor.parameters
         .map { it.type.classifier }
-        .map { dependencyTypeToDependencyProvider[it] }
-        .map { it?.provide() }
+        .map { resolveDependency(it, dependencyTypeToDependencyProvider) }
         .toTypedArray()
+
+    internal fun resolveDependency(
+        type: KClassifier?,
+        dependencyTypeToDependencyProvider: Map<KClass<*>, DependencyProvider<out Any>>
+    ): Any? = dependencyTypeToDependencyProvider[type]?.provide()
 }
