@@ -14,6 +14,7 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import kotlin.reflect.KClass
 
+// TODO: Clean this up...
 class ExternalFeatureLoaderFeature(
     private val dependencyInjector: DependencyInjector,
     private val featureRepository: FeatureRepository
