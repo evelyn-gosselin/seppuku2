@@ -11,4 +11,12 @@ dependencies {
     implementation(kotlin("reflect"))
 
     implementation(project(":seppuku-sdk:repository"))
+
+    testImplementation(kotlin("test"))
+}
+
+tasks {
+    test {
+        useJUnitPlatform()
+    }
 }

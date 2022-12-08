@@ -5,7 +5,6 @@ import java.util.*
 data class UniqueIdentifier(private val uniqueIdentifier: UUID) {
 
     override fun equals(other: Any?) = when (other) {
-        is UniqueIdentifier -> other.uniqueIdentifier == uniqueIdentifier
         is UUID -> other == uniqueIdentifier
         else -> super.equals(other)
     }

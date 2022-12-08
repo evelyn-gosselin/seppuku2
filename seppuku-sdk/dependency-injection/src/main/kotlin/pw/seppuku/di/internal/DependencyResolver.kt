@@ -12,7 +12,7 @@ internal object DependencyResolver {
         dependencyTypeToDependencyProvider: Map<KClass<*>, DependencyProvider<out Any>>
     ): T? {
         val suitableConstructor = findSuitableConstructor(type, dependencyTypeToDependencyProvider) ?: return null
-        val dependencies = resolveDependencies(suitableConstructor, dependencyTypeToDependencyProvider)
+        val dependencies = resolveDependencies(suitableConstructor, dependencyTypeToDependencyProvider) ?: return null
         return suitableConstructor.call(*dependencies)
     }
 
@@ -21,15 +21,21 @@ internal object DependencyResolver {
         dependencyTypeToDependencyProvider: Map<KClass<*>, DependencyProvider<out Any>>
     ): KFunction<T>? = type.constructors
         .associateBy { resolveDependencies(it, dependencyTypeToDependencyProvider) }
-        .toSortedMap(Comparator.comparingInt { it.size })
+        .filterKeys { it != null }
+        .toSortedMap(Comparator.comparingInt { it!!.size })
         .firstNotNullOfOrNull { it.value }
 
     private fun <T : Any> resolveDependencies(
         constructor: KFunction<T>,
         dependencyTypeToDependencyProvider: Map<KClass<*>, DependencyProvider<out Any>>
-    ): Array<Any?> = constructor.parameters
-        .map { it.type.classifier }
-        .map { resolveDependency(it, dependencyTypeToDependencyProvider) }
+    ): Array<Any?>? = constructor.parameters
+        .map {
+            val dependency = resolveDependency(it.type.classifier, dependencyTypeToDependencyProvider)
+            if (dependency == null && !it.type.isMarkedNullable)
+                return@resolveDependencies null
+
+            dependency
+        }
         .toTypedArray()
 
     internal fun resolveDependency(

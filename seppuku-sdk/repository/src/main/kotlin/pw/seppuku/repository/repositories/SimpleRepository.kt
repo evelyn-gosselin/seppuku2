@@ -7,7 +7,7 @@ open class SimpleRepository<K, V>(
 ) : AbstractRepository<K, V>() {
     override fun findAll(): Iterable<V> = backingMap.values
 
-    override fun findByKey(key: K): V? = backingMap[key]
+    override fun findByKeyOrNull(key: K): V? = backingMap[key]
 
     override fun save(key: K, value: V): V? = backingMap.put(key, value)
 }
