@@ -1,10 +1,9 @@
-name: Build Gradle project
+name: Build and test projects
 
-on:
-  push:
+on: [push, pull_request]
 
 jobs:
-  build-gradle-project:
+  build-and-test-projects:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout project sources
@@ -18,3 +17,5 @@ jobs:
         uses: gradle/gradle-build-action@v2
       - name: Run build with Gradle wrapper
         run: ./gradlew build
+      - name: Run test with Gradle wrapper
+        run: ./gradlew test
