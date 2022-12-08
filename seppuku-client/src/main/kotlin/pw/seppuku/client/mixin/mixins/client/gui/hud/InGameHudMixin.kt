@@ -10,10 +10,11 @@ import org.spongepowered.asm.mixin.injection.Inject
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 import pw.seppuku.client.Seppuku
 import pw.seppuku.client.components.client.gui.hud.InGameHudRender
+import pw.seppuku.client.mixin.ActualThis
 import pw.seppuku.feature.findComponent
 
 @Mixin(InGameHud::class)
-abstract class InGameHudMixin {
+abstract class InGameHudMixin : ActualThis<InGameHud> {
 
     @Shadow
     abstract fun getTextRenderer(): TextRenderer

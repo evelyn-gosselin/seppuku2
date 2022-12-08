@@ -1,6 +1,6 @@
 package pw.seppuku.client
 
-import pw.seppuku.client.feature.features.HeadsUpDisplayFeature
+import pw.seppuku.client.feature.features.ExternalFeatureLoaderFeature
 import pw.seppuku.client.feature.repository.SeppukuFeatureRepository
 import pw.seppuku.components.HumanIdentifier
 import pw.seppuku.di.DependencyProvider
@@ -20,11 +20,11 @@ object Seppuku {
     val featureRepository: FeatureRepository by lazy { dependencyInjector.get() }
 
     init {
-        val headsUpDisplayFeature = dependencyInjector.create<HeadsUpDisplayFeature>()
-        headsUpDisplayFeature.findComponent<HumanIdentifier>()?.run {
+        val externalFeatureLoaderFeature = dependencyInjector.create<ExternalFeatureLoaderFeature>()
+        externalFeatureLoaderFeature.findComponent<HumanIdentifier>()?.run {
             featureRepository.save(
                 toString(),
-                headsUpDisplayFeature
+                externalFeatureLoaderFeature
             )
         }
     }
