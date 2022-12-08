@@ -15,11 +15,11 @@ class SimpleRepositoryTest {
     private val mockSimpleRepository = SimpleRepository(backingMap)
 
     @Test
-    fun testFindByKeyReturnsBackingMapValue() {
-        assertEquals("one", mockSimpleRepository.findByKey(1))
-        assertEquals("two", mockSimpleRepository.findByKey(2))
-        assertEquals("three", mockSimpleRepository.findByKey(3))
-        assertEquals("four", mockSimpleRepository.findByKey(4))
-        assertEquals("five", mockSimpleRepository.findByKey(5))
+    fun testFindByKeyOrNullReturnsBackingMapValue() {
+        assertEquals("one", mockSimpleRepository.findByKeyOrNull(1))
+        assertEquals("two", mockSimpleRepository.findByKeyOrNull(2))
+        assertEquals("three", mockSimpleRepository.findByKeyOrNull(3))
+        assertEquals("four", mockSimpleRepository.findByKeyOrNull(4))
+        assertEquals("five", mockSimpleRepository.findByKeyOrNull(5))
     }
 }
