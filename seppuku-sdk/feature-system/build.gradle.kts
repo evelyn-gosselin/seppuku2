@@ -9,4 +9,6 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
+
+    implementation(project(":seppuku-sdk:repository"))
 }
