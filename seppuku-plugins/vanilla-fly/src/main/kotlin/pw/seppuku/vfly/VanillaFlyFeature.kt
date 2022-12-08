@@ -5,7 +5,9 @@ import pw.seppuku.components.HumanIdentifier
 import pw.seppuku.components.Toggle
 import pw.seppuku.feature.AbstractFeature
 import pw.seppuku.feature.Component
+import pw.seppuku.feature.PluginFeature
 
+@PluginFeature
 class VanillaFlyFeature : AbstractFeature() {
 
     @Component

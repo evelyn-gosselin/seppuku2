@@ -3,10 +3,7 @@ package pw.seppuku.client.feature.features
 import pw.seppuku.client.components.client.MinecraftClientInit
 import pw.seppuku.components.HumanIdentifier
 import pw.seppuku.di.DependencyInjector
-import pw.seppuku.feature.AbstractFeature
-import pw.seppuku.feature.Component
-import pw.seppuku.feature.Feature
-import pw.seppuku.feature.findComponent
+import pw.seppuku.feature.*
 import pw.seppuku.feature.repository.FeatureRepository
 import java.io.File
 import java.net.URLClassLoader
@@ -37,6 +34,7 @@ class PluginLoaderFeature(
             .filter(this::isZipFile)
             .map(this::loadPluginClasses)
             .flatten()
+            .filter(this::hasPluginFeatureAnnotation)
             .mapNotNull(this::featureClassOrNull)
             .map(this::createFeatureInstance)
             .forEach(this::saveFeatureInstance)
@@ -60,6 +58,9 @@ class PluginLoaderFeature(
                 pluginClassLoader.loadClass(pluginClassName).kotlin
             }
     }
+
+    private fun hasPluginFeatureAnnotation(pluginClass: KClass<out Any>): Boolean =
+        pluginClass.java.isAnnotationPresent(PluginFeature::class.java)
 
     @Suppress("UNCHECKED_CAST")
     private fun featureClassOrNull(pluginClass: KClass<out Any>): KClass<out Feature>? =

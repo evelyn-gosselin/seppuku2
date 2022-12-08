@@ -3,12 +3,10 @@ package pw.seppuku.hud
 import pw.seppuku.client.components.client.gui.hud.InGameHudRender
 import pw.seppuku.components.HumanIdentifier
 import pw.seppuku.components.Toggle
-import pw.seppuku.feature.AbstractFeature
-import pw.seppuku.feature.Component
-import pw.seppuku.feature.filterComponent
-import pw.seppuku.feature.mapComponent
+import pw.seppuku.feature.*
 import pw.seppuku.feature.repository.FeatureRepository
 
+@PluginFeature
 class HeadsUpDisplayFeature(
     private val featureRepository: FeatureRepository,
 ) : AbstractFeature() {

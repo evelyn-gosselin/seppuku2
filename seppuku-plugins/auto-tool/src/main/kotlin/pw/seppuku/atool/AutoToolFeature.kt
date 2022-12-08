@@ -2,14 +2,15 @@ package pw.seppuku.atool
 
 import net.minecraft.block.BlockState
 import net.minecraft.client.MinecraftClient
-import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket
 import net.minecraft.util.math.BlockPos
 import pw.seppuku.client.components.client.network.ClientPlayerInteractionManagerAttackBlock
 import pw.seppuku.components.HumanIdentifier
 import pw.seppuku.components.Toggle
 import pw.seppuku.feature.AbstractFeature
 import pw.seppuku.feature.Component
+import pw.seppuku.feature.PluginFeature
 
+@PluginFeature
 class AutoToolFeature(
     private val minecraftClient: MinecraftClient
 ) : AbstractFeature() {
