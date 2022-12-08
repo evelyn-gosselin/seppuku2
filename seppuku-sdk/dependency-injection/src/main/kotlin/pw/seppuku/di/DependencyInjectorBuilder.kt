@@ -18,7 +18,7 @@ class DependencyInjectorBuilder<T : DependencyInjector>(
     ): DependencyInjectorBuilder<T> =
         with(dependencyTypeToDependencyProviderPair.first, dependencyTypeToDependencyProviderPair.second)
 
-    fun with(
+    private fun with(
         dependencyType: KClass<*>,
         dependencyProvider: DependencyProvider<out Any>
     ): DependencyInjectorBuilder<T> {
