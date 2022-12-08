@@ -6,7 +6,6 @@ inline fun <reified T : Any> Feature.findComponentOrNull(): T? = findComponentOr
 
 inline fun <reified T : Any> Feature.findComponent(): T = findComponent(T::class)
 
-@Suppress("UNCHECKED_CAST")
 fun <C : Any> Iterable<Feature>.filterComponent(
     type: KClass<C>,
     strict: Boolean = true,
