@@ -9,30 +9,26 @@ pluginManagement {
     }
 
     plugins {
-        java apply false
+        kotlin("jvm") version "1.7.21" apply false
         id("fabric-loom") version "1.0-SNAPSHOT" apply false
     }
 }
 
+// TODO: figure out dependencyResolutionManagement
+
 include(
     "seppuku-client",
+    "seppuku-client-access",
+    "seppuku-client-components",
 
-    "seppuku-events",
-    "seppuku-access",
+    "seppuku-plugins:auto-tool",
+    "seppuku-plugins:fast-mine",
+    "seppuku-plugins:heads-up-display",
+    "seppuku-plugins:sprint",
+    "seppuku-plugins:vanilla-fly",
 
-    "seppuku-metadata-api",
-    "seppuku-event-api",
-    "seppuku-feature-api",
-    "seppuku-mixins-api",
-    "seppuku-plugin-api",
-    "seppuku-resolver-api",
-    "seppuku-transform-api",
-
-    "plugins:seppuku-auto-farm",
-    "plugins:seppuku-auto-tool",
-    "plugins:seppuku-chat-interface",
-    "plugins:seppuku-fast-mine",
-    "plugins:seppuku-heads-up",
-    "plugins:seppuku-sprint",
-    "plugins:seppuku-vanilla-fly",
+    "seppuku-sdk:components",
+    "seppuku-sdk:dependency-injection",
+    "seppuku-sdk:feature-system",
+    "seppuku-sdk:repository",
 )
