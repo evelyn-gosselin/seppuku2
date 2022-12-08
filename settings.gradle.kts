@@ -14,8 +14,6 @@ pluginManagement {
     }
 }
 
-// TODO: figure out dependencyResolutionManagement
-
 include(
     "seppuku-client",
     "seppuku-client-access",

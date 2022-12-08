@@ -3,7 +3,6 @@ package pw.seppuku.feature
 import pw.seppuku.feature.internal.ReflectionComponentMapBuilder
 import kotlin.reflect.KClass
 
-// TODO: Replace this with runtime code generation
 abstract class AbstractFeature : Feature {
 
     private val components by lazy {

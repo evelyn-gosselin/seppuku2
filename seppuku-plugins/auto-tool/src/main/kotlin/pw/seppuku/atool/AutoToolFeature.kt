@@ -34,7 +34,6 @@ class AutoToolFeature(
             this.getSlotRating(it)
         }
 
-    // TODO: Calculate with enchantments and durability
     private fun BlockState.getSlotRating(index: Int): Float =
         this@AutoToolFeature.minecraftClient.player?.inventory?.getStack(index)?.getMiningSpeedMultiplier(this) ?: 0f
 }
